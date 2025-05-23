@@ -1,42 +1,81 @@
-<div class="register-container">
-  <h2>Criar Conta</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+<div class="auth-card">
+  <h2 class="auth-title">Crie sua conta</h2>
+  <p class="auth-subtitle">Preencha os dados para se registrar</p>
 
-    <div>
-      <label for="username">Usuário</label>
-      <input id="username" type="text" formControlName="username" />
-      <div *ngIf="submitted && f.username.errors" class="error">
-        Usuário é obrigatório.
+  <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label class="form-label">Tipo de conta</label>
+      <div class="d-flex align-items-center">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            value="paciente"
+            formControlName="tipo"
+            id="tipoPaciente"
+            name="tipo"
+          />
+          <label class="form-check-label" for="tipoPaciente">Paciente</label>
+        </div>
+        <div class="form-check ms-3">
+          <input
+            class="form-check-input"
+            type="radio"
+            value="centro"
+            formControlName="tipo"
+            id="tipoCentro"
+            name="tipo"
+          />
+          <label class="form-check-label" for="tipoCentro">Centro clínico</label>
+        </div>
       </div>
     </div>
 
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" />
-      <div *ngIf="submitted && f.email.errors" class="error">
-        <div *ngIf="f.email.errors['required']">Email é obrigatório.</div>
-        <div *ngIf="f.email.errors['email']">Email inválido.</div>
-      </div>
+    <div class="form-group">
+      <label for="nome" class="form-label">Nome completo</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="nome"
+        placeholder="Seu nome"
+      />
     </div>
 
-    <div>
-      <label for="password">Senha</label>
-      <input id="password" type="password" formControlName="password" />
-      <div *ngIf="submitted && f.password.errors" class="error">
-        <div *ngIf="f.password.errors['required']">Senha é obrigatória.</div>
-        <div *ngIf="f.password.errors['minlength']">Senha deve ter no mínimo 6 caracteres.</div>
-      </div>
+    <div class="form-group">
+      <label for="email" class="form-label">E-mail</label>
+      <input
+        type="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="Seu e-mail"
+      />
     </div>
 
-    <div>
-      <label for="confirmPassword">Confirmar Senha</label>
-      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
-      <div *ngIf="submitted && f.confirmPassword.errors" class="error">
-        <div *ngIf="f.confirmPassword.errors['required']">Confirmação de senha é obrigatória.</div>
-        <div *ngIf="f.confirmPassword.errors['mustMatch']">As senhas não coincidem.</div>
-      </div>
+    <div class="form-group">
+      <label for="senha" class="form-label">Senha</label>
+      <input
+        type="password"
+        class="form-control"
+        formControlName="senha"
+        placeholder="Crie uma senha"
+      />
     </div>
 
-    <button type="submit">Registrar</button>
+    <div class="form-group">
+      <label for="confirmSenha" class="form-label">Confirmar senha</label>
+      <input
+        type="password"
+        class="form-control"
+        formControlName="confirmSenha"
+        placeholder="Repita sua senha"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
   </form>
+
+  <div class="auth-footer mt-3">
+    <span>Já tem uma conta?</span>
+    <a routerLink="/login">Faça login</a>
+  </div>
 </div>
