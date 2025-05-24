@@ -6,6 +6,24 @@ interface LoginResponse {
   token: string;
  
 }
+export  interface PacienteRegister {
+  nome: string;
+  idade: number;        
+  sexo: 'M' | 'F';
+  email: string;
+  senha: string;
+  condicoes: string[];
+  endereco: string;
+}
+
+
+interface CentroRegister {
+  nome: string;
+  email: string;
+  senha: string;
+  endereco: string;
+  telefone: string;
+}
 
 
 @Injectable({
@@ -21,11 +39,11 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { email, senha, tipo });
   }
 
-  registerPaciente(nome: string, email: string, senha: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/register/paciente`, { nome, email, senha });
-  }
+ registerPaciente(data: PacienteRegister): Observable<any> {
+  return this.http.post(`${this.baseUrl}/register/paciente`, data);
+}
 
-  registerCentro(nome: string, email: string, senha: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/register/centro`, { nome, email, senha });
-  }
+registerCentro(data: CentroRegister): Observable<any> {
+  return this.http.post(`${this.baseUrl}/register/centro`, data);
+}
 }

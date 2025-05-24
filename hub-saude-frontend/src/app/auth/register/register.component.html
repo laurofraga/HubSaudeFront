@@ -1,81 +1,65 @@
-<div class="auth-card">
-  <h2 class="auth-title">Crie sua conta</h2>
-  <p class="auth-subtitle">Preencha os dados para se registrar</p>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-  <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label class="form-label">Tipo de conta</label>
-      <div class="d-flex align-items-center">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            value="paciente"
-            formControlName="tipo"
-            id="tipoPaciente"
-            name="tipo"
-          />
-          <label class="form-check-label" for="tipoPaciente">Paciente</label>
-        </div>
-        <div class="form-check ms-3">
-          <input
-            class="form-check-input"
-            type="radio"
-            value="centro"
-            formControlName="tipo"
-            id="tipoCentro"
-            name="tipo"
-          />
-          <label class="form-check-label" for="tipoCentro">Centro clínico</label>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="nome" class="form-label">Nome completo</label>
-      <input
-        type="text"
-        class="form-control"
-        formControlName="nome"
-        placeholder="Seu nome"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="email" class="form-label">E-mail</label>
-      <input
-        type="email"
-        class="form-control"
-        formControlName="email"
-        placeholder="Seu e-mail"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="senha" class="form-label">Senha</label>
-      <input
-        type="password"
-        class="form-control"
-        formControlName="senha"
-        placeholder="Crie uma senha"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="confirmSenha" class="form-label">Confirmar senha</label>
-      <input
-        type="password"
-        class="form-control"
-        formControlName="confirmSenha"
-        placeholder="Repita sua senha"
-      />
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
-  </form>
-
-  <div class="auth-footer mt-3">
-    <span>Já tem uma conta?</span>
-    <a routerLink="/login">Faça login</a>
+  <!-- Seletor de tipo -->
+  <div class="form-group">
+    <label>Tipo de conta</label>
+    <select class="form-control" formControlName="tipo">
+      <option value="paciente">Paciente</option>
+      <option value="centro">Centro Clínico</option>
+    </select>
   </div>
-</div>
+
+  <!-- Campos comuns -->
+  <div class="form-group">
+    <label>Nome</label>
+    <input type="text" class="form-control" formControlName="nome">
+  </div>
+
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" class="form-control" formControlName="email">
+  </div>
+
+  <div class="form-group">
+    <label>Senha</label>
+    <input type="password" class="form-control" formControlName="senha">
+  </div>
+
+  <div class="form-group">
+    <label>Endereço</label>
+    <input type="text" class="form-control" formControlName="endereco">
+  </div>
+
+  <!-- Campos específicos de paciente -->
+  <ng-container *ngIf="f['tipo'].value === 'paciente'">
+    <div class="form-group">
+    <label>Idade</label>
+    <input type="number" class="form-control" formControlName="idade" />
+    <div *ngIf="submitted && f['idade'].errors" class="text-danger">
+      Idade é obrigatória.
+    </div>
+    </div>
+    <div class="form-group">
+      <label>Sexo</label>
+      <select class="form-control" formControlName="sexo">
+        <option value="M">Masculino</option>
+        <option value="F">Feminino</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Condições médicas (separadas por vírgula)</label>
+      <input type="text" class="form-control" formControlName="condicoes">
+    </div>
+  </ng-container>
+
+  <!-- Campos específicos de centro -->
+  <ng-container *ngIf="f['tipo'].value === 'centro'">
+    <div class="form-group">
+      <label>Telefone</label>
+      <input type="text" class="form-control" formControlName="telefone">
+    </div>
+  </ng-container>
+
+  <button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
+</form>
