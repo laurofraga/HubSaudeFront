@@ -1,1 +1,18 @@
-<p>home-paciente works!</p>
+<div *ngIf="loading">Carregando...</div>
+
+<div *ngIf="!loading">
+  <h2>Bem-vindo, {{ data.paciente.nome }}</h2>
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let estudo of data.estudos">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ estudo.titulo }}</h5>
+          <p class="card-text">{{ estudo.descricao }}</p>
+          <p><strong>Fase:</strong> {{ estudo.fase }}</p>
+          <p><strong>Data de entrada:</strong> {{ estudo.participacao.dataParticipacao }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
