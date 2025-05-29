@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 
 interface LoginResponse {
   token: string;
- 
+  tipo: string;
 }
+
 export  interface PacienteRegister {
   nome: string;
   idade: number;        
@@ -26,11 +27,8 @@ interface CentroRegister {
 }
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class AuthService {
-
   private baseUrl = '/api/auth';  
 
   constructor(private http: HttpClient) { }
