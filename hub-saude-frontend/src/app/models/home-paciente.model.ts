@@ -1,21 +1,30 @@
+export interface Paciente {
+  id: number;
+  nome: string;
+  idade: number;
+  sexo: 'M' | 'F';
+  email: string;
+  condicoes: string[];
+  endereco: string;
+}
+
 export interface Participacao {
   id: number;
-  dataParticipacao: string;
+  status: 'Ativo' | 'Inativo';
+  dataParticipacao: string; 
 }
 
 export interface EstudoClinico {
   id: number;
   titulo: string;
-  descricao: string;
-  fase: string;
-  dataInicio: string;
+  descricao: string;         
+  fase: string;               
+  dataEntrada: string;        
+  participacao: Participacao
 }
 
 export interface HomePacienteData {
-    paciente: {
-        id: number;
-        nome: string;
-        email: string;};
-
-    estudos: EstudoClinico[];
+   paciente: Paciente;
+  estudos: EstudoClinico[];
+  participacoes: unknown[];
 }

@@ -1,18 +1,45 @@
-<div *ngIf="loading">Carregando...</div>
-
-<div *ngIf="!loading">
-  <h2>Bem-vindo, {{ data.paciente.nome }}</h2>
-
-  <div class="row">
-    <div class="col-md-4" *ngFor="let estudo of data.estudos">
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">{{ estudo.titulo }}</h5>
-          <p class="card-text">{{ estudo.descricao }}</p>
-          <p><strong>Fase:</strong> {{ estudo.fase }}</p>
-          <p><strong>Data de entrada:</strong> {{ estudo.participacao.dataParticipacao }}</p>
-        </div>
+<div class="container my-5" *ngIf="!loading && data">
+  
+  <div class="perfil card shadow-sm mb-5">
+    <div class="card-body">
+      <h3 class="mb-3">Olá, {{ data.paciente.nome }}!</h3>
+      <div class="row gy-1 small">
+        <div class="col-sm-6"><strong>Idade:</strong> {{ data.paciente.idade }}</div>
+        <div class="col-sm-6"><strong>Sexo:</strong> {{ data.paciente.sexo }}</div>
+        <div class="col-sm-6"><strong>Email:</strong> {{ data.paciente.email }}</div>
+        <div class="col-sm-6"><strong>Endereço:</strong> {{ data.paciente.endereco }}</div>
+        <div class="col-12"><strong>Condições:</strong> {{ data.paciente.condicoes.join(', ') }}</div>
       </div>
     </div>
   </div>
+
+  
+  <h4 class="mb-4">Estudos em que você participa</h4>
+  <div class="row g-4">
+    <ng-container *ngIf="data.estudos.length; else semEstudo">
+      <div class="col-md-6 col-lg-4" *ngFor="let estudo of data.estudos">
+        <div class="estudo-card card h-100 p-3">
+          <h5 class="text-primary">{{ estudo.titulo }}</h5>
+          <p class="descricao small mb-2">{{ estudo.descricao }}</p>
+          <ul class="list-unstyled small mb-3">
+            <li><strong>Fase:</strong> {{ estudo.fase }}</li>
+            <li><strong>Data de entrada:</strong> {{ estudo.dataEntrada }}</li>
+            <li><strong>Status:</strong> {{ estudo.participacao.status }}</li>
+          </ul>
+          <button class="btn btn-outline-primary w-100">
+            Ver mais detalhes
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #semEstudo>
+      <div class="col-12 text-muted">Nenhum estudo encontrado.</div>
+    </ng-template>
+  </div>
+</div>
+
+
+<div *ngIf="loading" class="d-flex justify-content-center my-5">
+  <div class="spinner-border text-primary" role="status"></div>
 </div>
