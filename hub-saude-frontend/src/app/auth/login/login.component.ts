@@ -23,7 +23,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
-      senha: ['', Validators.required]
+      senha: ['', Validators.required],
+      tipo: ['paciente', Validators.required]
     });
   }
 
@@ -37,21 +38,30 @@ export class LoginComponent implements OnInit {
     }
 
     console.log('Login válido', this.loginForm.value);
-    this.authService.login(this.loginForm.value.email, this.loginForm.value.senha, 'centro' /* ou 'paciente' conforme contexto */)
+
+   const { email, senha, tipo } = this.loginForm.value;
+    this.authService.login(email, senha, tipo)
       .subscribe({
         next: (res) => {
-          console.log('Login realizado:', res);
-          
+         
           localStorage.setItem('token', res.token);
           localStorage.setItem('tipo', res.tipo);
-          this.router.navigate(['/dashboard']); 
-        },
-        error: (err) => {
-          console.error('Erro ao fazer login:', err);
-          alert('Usuário ou senha inválidos');
+          
+          console.log('Login realizado:', res);
+         if (res.tipo === 'centro') {
+          this.router.navigate([`/centro-home/${res.user.id}`]);
+        } else if (res.tipo === 'paciente') {
+          this.router.navigate([`/home-paciente/${res.user.id}`]);
+        } else {
+          this.router.navigate(['/home']); 
         }
-      });
-  }
-  }
-  
+      },
+      
+      error: (err) => {
+        console.error('Erro ao fazer login:', err);
+        alert('Usuário ou senha inválidos');
+      }
+    });
+}
+} 
 

@@ -2,7 +2,15 @@
   <h2 class="auth-title">Bem-vindo de volta</h2>
   <p class="auth-subtitle">Faça login para continuar</p>
 
+  
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+  <label for="tipo" class="form-label">Tipo de usuário</label>
+  <select class="form-control" formControlName="tipo" id="tipo">
+    <option value="paciente">Paciente</option>
+    <option value="centro">Centro Clínico</option>
+  </select>
+</div>
     <div class="form-group">
       <label for="email" class="form-label">E-mail</label>
       <input

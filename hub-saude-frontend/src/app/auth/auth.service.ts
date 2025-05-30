@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 interface LoginResponse {
   token: string;
   tipo: string;
+  user: {
+    id: number;
+  };
 }
 
 export  interface PacienteRegister {
