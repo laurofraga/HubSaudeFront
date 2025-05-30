@@ -1,0 +1,42 @@
+<header class="header bg-dark text-white px-4 py-3 d-flex align-items-center justify-content-between shadow-sm">
+  <h4 class="mb-0">{{ data.centro.nome }}</h4>
+  <button class="btn btn-outline-light" (click)="criarEstudo()">
+    + Criar estudo
+  </button>
+</header>
+
+<div *ngIf="loading" class="d-flex justify-content-center my-5">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>
+
+<div class="container my-5" *ngIf="!loading && data">
+
+  
+  <div *ngIf="data.estudos.length === 0" class="text-muted text-center">
+    Nenhum estudo cadastrado para este centro clínico.
+  </div>
+
+  
+  <div class="row g-4" *ngIf="data.estudos.length">
+    <div class="col-md-6 col-lg-4" *ngFor="let estudo of data.estudos">
+      <div class="estudo-card card h-100 p-3 border border-dark shadow-sm">
+
+        <h5 class="text-primary">{{ estudo.titulo }}</h5>
+        <p class="descricao small mb-2">{{ estudo.descricao }}</p>
+
+        <ul class="list-unstyled small mb-3">
+          <li><strong>Fase:</strong> {{ estudo.fase }}</li>
+          <li><strong>Período:</strong>
+            {{ estudo.dataInicio | date:'dd/MM/yyyy' }} -
+            {{ estudo.dataFim | date:'dd/MM/yyyy' }}
+          </li>
+          <li><strong>Pacientes:</strong> {{ estudo.totalPacientes }}</li>
+        </ul>
+
+        <button class="btn btn-outline-primary w-100" (click)="verDetalhes(estudo.id)">
+          Ver detalhes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

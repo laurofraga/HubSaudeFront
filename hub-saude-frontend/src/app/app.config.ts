@@ -5,15 +5,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HomePacienteComponent } from './pages/home-paciente.component';
-
+import { HomeCentroComponent } from './pages/home-centro/home-centro.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home-paciente', component: HomePacienteComponent },
-
+  { path: 'centro-home/:id', component: HomeCentroComponent }
 ];
+
 
 export const appConfig = {
   providers: [

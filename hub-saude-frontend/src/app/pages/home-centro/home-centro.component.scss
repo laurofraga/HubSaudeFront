@@ -1,0 +1,22 @@
+
+.header {
+  border-bottom: 3px solid #0d6efd;
+}
+
+
+.estudo-card {
+  border-radius: 1rem;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s;
+  
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,.15);
+    border-color: #0d6efd;
+    cursor: pointer;
+  }
+
+  .descricao {
+    color:#555;
+    line-height:1.25rem;
+  }
+}
