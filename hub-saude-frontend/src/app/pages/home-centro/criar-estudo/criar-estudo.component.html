@@ -1,1 +1,35 @@
-<p>criar-estudo works!</p>
+<div class="container my-5">
+  <h3>Criar novo estudo</h3>
+  <form (ngSubmit)="enviar()" #form="ngForm" class="mt-4">
+
+    <div class="mb-3">
+      <label class="form-label">Título</label>
+      <input type="text" class="form-control" name="titulo" [(ngModel)]="estudo.titulo" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Descrição</label>
+      <textarea class="form-control" name="descricao" [(ngModel)]="estudo.descricao" rows="3" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Fase</label>
+      <select class="form-select" name="fase" [(ngModel)]="estudo.fase" required>
+        <option value="">Selecione a fase</option>
+        <option *ngFor="let f of fases" [value]="f">{{ f }}</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Data Início</label>
+      <input type="date" class="form-control" name="dataInicio" [(ngModel)]="estudo.dataInicio" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Data Fim</label>
+      <input type="date" class="form-control" name="dataFim" [(ngModel)]="estudo.dataFim" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Criar Estudo</button>
+  </form>
+</div>

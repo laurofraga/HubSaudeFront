@@ -12,7 +12,8 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home-paciente/:id', component: HomePacienteComponent },
-  { path: 'centro-home/:id', component: HomeCentroComponent }
+  { path: 'centro-home/:id', component: HomeCentroComponent },
+  {path: 'centro/:id/criar-estudo', component: CriarEstudoComponent}
 ];
 
 
