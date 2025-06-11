@@ -38,7 +38,7 @@ export class HomeCentroComponent implements OnInit {
   }
 
   criarEstudo() {
-    this.router.navigate(['/criar-estudo']);          
+      this.router.navigate([`/centro/${this.data.centro.id}/criar-estudo`]);         
   }
 
   verDetalhes(id: number) {
