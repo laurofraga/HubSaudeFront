@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CentroService } from '../../services/centro.service';
 import { HomeCentroData, EstudoCentro } from '../../models/home-centro.model';

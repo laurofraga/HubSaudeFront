@@ -6,6 +6,9 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HomePacienteComponent } from './pages/home-paciente.component';
 import { HomeCentroComponent } from './pages/home-centro/home-centro.component';
+import { CriarEstudoComponent } from './pages/home-centro/criar-estudo/criar-estudo.component';
+
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },

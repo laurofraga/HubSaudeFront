@@ -9,7 +9,7 @@
 
     <div class="mb-3">
       <label class="form-label">Descrição</label>
-      <textarea class="form-control" name="descricao" [(ngModel)]="estudo.descricao" rows="3" required></textarea>
+      <textarea class="form-control" name="descricao" [(ngModel)]="estudo.descrica" rows="3" required></textarea>
     </div>
 
     <div class="mb-3">
@@ -29,7 +29,30 @@
       <label class="form-label">Data Fim</label>
       <input type="date" class="form-control" name="dataFim" [(ngModel)]="estudo.dataFim" required>
     </div>
-
+    <div class="mb-3">
+  <label class="form-label">Critérios de Inclusão</label>
+  <div *ngFor="let criterio of estudo.criteriosInclusao; let i = index" class="input-group mb-2">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="estudo.criteriosInclusao[i]"
+      name="criterioInclusao{{ i }}"
+      required
+    >
+  </div>
+</div>
+  <div class="mb-3">
+  <label class="form-label">Critérios de Exclusão</label>
+  <div *ngFor="let criterio of estudo.criteriosExclusao; let i = index" class="input-group mb-2">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="estudo.criteriosExclusao[i]"
+      name="criterioExclusao{{ i }}"
+      required
+    >
+  </div>
+</div>
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Criar Estudo</button>
   </form>
 </div>
