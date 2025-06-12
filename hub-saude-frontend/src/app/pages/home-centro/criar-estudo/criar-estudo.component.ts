@@ -46,7 +46,7 @@ enviar() {
   console.log('Payload enviado:', payload)
 
     this.http.post('/api/estudos', payload).subscribe({
-      next: () => this.router.navigate(['/centro', this.centroId]),
+      next: () => this.router.navigate(['/centro-home/', this.centroId]),
       error: err => alert('Erro ao criar estudo: ' + err.message)
     });
   }
