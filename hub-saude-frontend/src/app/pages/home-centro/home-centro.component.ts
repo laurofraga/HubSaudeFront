@@ -44,6 +44,6 @@ export class HomeCentroComponent implements OnInit {
   }
 
   verDetalhes(id: number) {
-    this.router.navigate(['/estudo', id]);            
+    this.router.navigate(['/estudos', id]);            
   }
 }

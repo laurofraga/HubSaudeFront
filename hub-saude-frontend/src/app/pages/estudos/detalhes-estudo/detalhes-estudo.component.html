@@ -1,1 +1,31 @@
-<p>detalhes-estudo works!</p>
+
+<div class="container mt-4">
+  <h2>Detalhes do Estudo Clínico</h2>
+
+  <div *ngIf="estudo">
+    <p><strong>Título:</strong> {{ estudo.titulo }}</p>
+    <p><strong>Descrição:</strong> {{ estudo.descrica }}</p>
+    <p><strong>Fase:</strong> {{ estudo.fase }}</p>
+    <p><strong>Data Início:</strong> {{ estudo.dataInicio | date }}</p>
+    <p><strong>Data Fim:</strong> {{ estudo.dataFim | date }}</p>
+    <p><strong>Centro Clínico:</strong> {{ estudo.centroClinico?.nome }}</p>
+
+    <div>
+      <strong>Critérios de Inclusão:</strong>
+      <ul>
+        <li *ngFor="let criterio of estudo.criteriosInclusao">{{ criterio }}</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Critérios de Exclusão:</strong>
+      <ul>
+        <li *ngFor="let criterio of estudo.criteriosExclusao">{{ criterio }}</li>
+      </ul>
+    </div>
+
+    <button class="btn btn-primary me-2" (click)="editarEstudo()">Editar</button>
+    <button class="btn btn-danger me-2" (click)="excluirEstudo()">Excluir</button>
+    <button class="btn btn-secondary" (click)="voltar()">Voltar</button>
+  </div>
+</div>

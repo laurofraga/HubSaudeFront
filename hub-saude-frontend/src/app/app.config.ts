@@ -7,7 +7,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { HomePacienteComponent } from './pages/home-paciente.component';
 import { HomeCentroComponent } from './pages/home-centro/home-centro.component';
 import { CriarEstudoComponent } from './pages/home-centro/criar-estudo/criar-estudo.component';
-
+import { DetalhesEstudoComponent } from './pages/estudos/detalhes-estudo/detalhes-estudo.component';
 
 
 export const routes: Routes = [
@@ -16,7 +16,8 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home-paciente/:id', component: HomePacienteComponent },
   { path: 'centro-home/:id', component: HomeCentroComponent },
-  {path: 'centro/:id/criar-estudo', component: CriarEstudoComponent}
+  {path: 'centro/:id/criar-estudo', component: CriarEstudoComponent},
+  {path: 'estudos/:id', component: DetalhesEstudoComponent}
 ];
 
 
