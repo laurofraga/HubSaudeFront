@@ -1,0 +1,36 @@
+<div class="container my-5">
+    <h2 class="mb-4">Estudos Clínicos Compatíveis com seu Perfil</h2>
+    <p class="text-muted mb-5">
+        Com base nas suas condições de saúde, encontramos os seguintes estudos que podem ser do seu interesse.
+    </p>
+
+    <div *ngIf="loading" class="d-flex justify-content-center my-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
+    <div *ngIf="!loading">
+        <div class="row g-4" *ngIf="estudosCompativeis.length > 0; else semEstudos">
+  <div class="col-md-6 col-lg-4" *ngFor="let estudo of estudosCompativeis">
+    <div class="estudo-card card h-100 p-3 d-flex flex-column">
+      <div class="flex-grow-1">
+        <h5 class="text-primary">{{ estudo.titulo }}</h5>
+        <p class="descricao small mb-2">{{ estudo.descricao }}</p>
+        <ul class="list-unstyled small mb-3">
+          <li><strong>Fase:</strong> {{ estudo.fase }}</li>
+          <li><strong>Status do Estudo:</strong> <span class="badge bg-success">{{ estudo.status }}</span></li>
+        </ul>
+      </div>
+      <a [routerLink]="['/meus-estudos', estudo.id]" class="btn btn-outline-primary w-100 mt-auto">
+        Saber Mais
+      </a>
+    </div>
+  </div>
+</div>
+        <ng-template #semEstudos>
+            <div class="alert alert-info">
+                <h4 class="alert-heading">Nenhum estudo novo encontrado!</h4>
+                <p>No momento, não encontramos novos estudos compatíveis com seu perfil. Verifique novamente mais tarde.</p>
+            </div>
+        </ng-template>
+    </div>
+</div>

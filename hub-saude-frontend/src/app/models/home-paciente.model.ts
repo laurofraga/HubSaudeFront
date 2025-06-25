@@ -20,7 +20,8 @@ export interface EstudoClinico {
   descricao: string;         
   fase: string;               
   dataEntrada: string;        
-  participacao: Participacao
+  participacao?: Participacao
+  status?: 'Recrutando' | 'Encerrado' | 'Em Breve'; 
 }
 
 export interface HomePacienteData {

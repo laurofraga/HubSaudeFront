@@ -13,20 +13,24 @@
     </div>
   </div>
 
+  <div class="text-center mb-5">
+    <button class="btn btn-lg btn-success" (click)="irParaPesquisa()">
+      <i class="bi bi-search"></i> Encontrar Novos Estudos Compatíveis
+    </button>
+  </div>
   
   <h4 class="mb-4">Estudos em que você participa</h4>
   <div class="row g-4">
-    <ng-container *ngIf="data.estudos.length; else semEstudo">
+    <ng-container *ngIf="data.estudos && data.estudos.length > 0; else semEstudo">
       <div class="col-md-6 col-lg-4" *ngFor="let estudo of data.estudos">
         <div class="estudo-card card h-100 p-3">
           <h5 class="text-primary">{{ estudo.titulo }}</h5>
           <p class="descricao small mb-2">{{ estudo.descricao }}</p>
           <ul class="list-unstyled small mb-3">
             <li><strong>Fase:</strong> {{ estudo.fase }}</li>
-            <li><strong>Data de entrada:</strong> {{ estudo.dataEntrada }}</li>
-            <li><strong>Status:</strong> {{ estudo.participacao.status }}</li>
+            <li><strong>Status da sua participação:</strong> {{ estudo.participacao?.status }}</li>
           </ul>
-          <button class="btn btn-outline-primary w-100">
+          <button class="btn btn-outline-primary w-100" (click)="verDetalhes(estudo.id)">
             Ver mais detalhes
           </button>
         </div>
@@ -39,7 +43,7 @@
   </div>
 </div>
 
-
 <div *ngIf="loading" class="d-flex justify-content-center my-5">
   <div class="spinner-border text-primary" role="status"></div>
 </div>
+

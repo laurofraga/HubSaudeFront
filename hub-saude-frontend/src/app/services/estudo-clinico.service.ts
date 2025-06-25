@@ -1,0 +1,22 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { EstudoClinico } from '../models/home-paciente.model'; 
+
+@Injectable({
+  providedIn: 'root'
+})
+export class EstudoClinicoService {
+  private apiUrl = '/api';
+  constructor(private http: HttpClient) {}
+
+  
+  buscarPorId(id: number): Observable<EstudoClinico> {
+    return this.http.get<EstudoClinico>(`${this.apiUrl}/estudos/${id}`);
+  }
+
+  buscarEstudosCompativeis(pacienteId: number): Observable<EstudoClinico[]> {
+    return this.http.get<EstudoClinico[]>(`${this.apiUrl}/pacientes/estudos-compativeis/${pacienteId}`);
+  }
+}

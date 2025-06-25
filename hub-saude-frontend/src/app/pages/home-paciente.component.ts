@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {PacienteService} from '../services/paciente.service';
 import { HomePacienteData, EstudoClinico } from '../models/home-paciente.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-paciente',
@@ -15,20 +16,20 @@ export class HomePacienteComponent implements OnInit {
   data!: HomePacienteData;
   loading = true;
 
-  constructor(private pacienteService: PacienteService) {}
-  ngOnInit(): void {
-    const pacienteId = 18; 
+  constructor(private pacienteService: PacienteService,private router: Router) {}
+   ngOnInit(): void {
+    const pacienteId = 18;
     this.pacienteService
       .getHomePacienteData(pacienteId)
       .subscribe({
         next: (res) => {
-          
-          const estudos: EstudoClinico[] = res.estudos.map(e => ({
-            ...e,
-            descricao: (e as any).descrica ?? e.descricao   
-          })) as EstudoClinico[];
-
-          this.data = { ...res, estudos };
+          const estudosCorrigidos = res.estudos.map(estudo => {
+            return {
+              ...estudo,
+              descricao: estudo.descricao || (estudo as any).descrica || ''
+            };
+          });
+          this.data = { ...res, estudos: estudosCorrigidos };
           this.loading = false;
         },
         error: (err) => {
@@ -37,4 +38,15 @@ export class HomePacienteComponent implements OnInit {
         }
       });
   }
+
+  verDetalhes(estudoId: number | undefined): void {
+    if (estudoId) {
+      this.router.navigate(['/meus-estudos', estudoId]);
+    }
+  }
+
+  irParaPesquisa(): void {
+    this.router.navigate(['/pesquisar-estudos']);
+  }
 }
+

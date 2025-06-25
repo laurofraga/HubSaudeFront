@@ -8,6 +8,9 @@ import { HomePacienteComponent } from './pages/home-paciente.component';
 import { HomeCentroComponent } from './pages/home-centro/home-centro.component';
 import { CriarEstudoComponent } from './pages/home-centro/criar-estudo/criar-estudo.component';
 import { DetalhesEstudoComponent } from './pages/estudos/detalhes-estudo/detalhes-estudo.component';
+import { DetalheEstudoPacienteComponent } from './pages/paciente/detalhe-estudo-paciente/detalhe-estudo-paciente.component';
+import { PesquisarEstudosComponent } from './pages/paciente/pesquisar-estudos/pesquisar-estudos.component';
+import path from 'path';
 
 
 export const routes: Routes = [
@@ -17,7 +20,10 @@ export const routes: Routes = [
   { path: 'home-paciente/:id', component: HomePacienteComponent },
   { path: 'centro-home/:id', component: HomeCentroComponent },
   {path: 'centro/:id/criar-estudo', component: CriarEstudoComponent},
-  {path: 'estudos/:id', component: DetalhesEstudoComponent}
+  {path: 'estudos/:id', component: DetalhesEstudoComponent},
+  { path: 'meus-estudos/:id', component: DetalheEstudoPacienteComponent },
+  { path: 'pesquisar-estudos', component: PesquisarEstudosComponent }
+
 ];
 
 

@@ -9,14 +9,12 @@ import { HomePacienteData } from "../models/home-paciente.model";
 })
 
 export class PacienteService {
-  private baseUrl = '/api/pacientes';
+  private baseUrl = '/api';
 
 
   constructor(private http: HttpClient) {}
 
-  
-  
-getHomePacienteData(pacienteId: number): Observable<HomePacienteData> {
-  return this.http.get<HomePacienteData>(`${this.baseUrl}/home/${pacienteId}`);
-}
+  getHomePacienteData(pacienteId: number): Observable<HomePacienteData> {
+     return this.http.get<HomePacienteData>(`${this.baseUrl}/pacientes/home/${pacienteId}`);
+  }
 }
