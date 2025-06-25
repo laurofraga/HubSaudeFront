@@ -1,0 +1,30 @@
+.category-text {
+    color: #0d6efd; /* Cor azul primária do Bootstrap */
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-badge {
+    background-color: #d1e7dd; /* Verde claro do Bootstrap */
+    color: #0f5132; /* Verde escuro do Bootstrap */
+    padding: 0.4em 0.8em;
+    border-radius: 50rem; /* pill shape */
+    font-weight: 600;
+  }
+  
+  .details-label {
+    font-size: 0.9rem;
+    color: #6c757d; /* text-muted */
+  }
+
+  .details-value {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .action-link {
+    text-decoration: none;
+    font-weight: 600;
+  }

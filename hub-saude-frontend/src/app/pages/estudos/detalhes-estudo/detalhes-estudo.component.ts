@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-detalhes-estudo',
   templateUrl: './detalhes-estudo.component.html',
+  styleUrls: ['./detalhes-estudo.component.scss'], 
   imports: [CommonModule]
 })
 export class DetalhesEstudoComponent implements OnInit {

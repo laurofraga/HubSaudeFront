@@ -1,31 +1,80 @@
+<div class="container my-5">
+  <a (click)="voltar()" class="action-link mb-3 d-inline-block">
+    <i class="bi bi-arrow-left"></i> Voltar para a lista
+  </a>
 
-<div class="container mt-4">
-  <h2>Detalhes do Estudo Clínico</h2>
-
-  <div *ngIf="estudo">
-    <p><strong>Título:</strong> {{ estudo.titulo }}</p>
-    <p><strong>Descrição:</strong> {{ estudo.descrica }}</p>
-    <p><strong>Fase:</strong> {{ estudo.fase }}</p>
-    <p><strong>Data Início:</strong> {{ estudo.dataInicio | date }}</p>
-    <p><strong>Data Fim:</strong> {{ estudo.dataFim | date }}</p>
-    <p><strong>Centro Clínico:</strong> {{ estudo.centroClinico?.nome }}</p>
-
-    <div>
-      <strong>Critérios de Inclusão:</strong>
-      <ul>
-        <li *ngFor="let criterio of estudo.criteriosInclusao">{{ criterio }}</li>
-      </ul>
+  <div *ngIf="!estudo; else studyDetails" class="d-flex justify-content-center p-5">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="visually-hidden">Carregando...</span>
     </div>
-
-    <div>
-      <strong>Critérios de Exclusão:</strong>
-      <ul>
-        <li *ngFor="let criterio of estudo.criteriosExclusao">{{ criterio }}</li>
-      </ul>
-    </div>
-
-    <button class="btn btn-primary me-2" (click)="editarEstudo()">Editar</button>
-    <button class="btn btn-danger me-2" (click)="excluirEstudo()">Excluir</button>
-    <button class="btn btn-secondary" (click)="voltar()">Voltar</button>
   </div>
+
+  <ng-template #studyDetails>
+    <div class="card border-0 shadow-sm p-3 p-md-4">
+      <div class="card-body">
+        
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <h2 class="h3 category-text mb-1">{{ estudo.titulo }}</h2>
+          </div>
+          <a (click)="editarEstudo()" class="action-link flex-shrink-0 ms-3">Editar Estudo</a>
+        </div>
+
+        <p class="text-muted">{{ estudo.descrica }}</p>
+
+        <hr class="my-4">
+
+        <div class="row gy-4">
+          <div class="col-6 col-md-3">
+            <p class="details-label mb-1">Fase do Estudo:</p>
+            <p class="details-value mb-0">{{ estudo.fase }}</p>
+          </div>
+          <div class="col-12 col-md-6">
+            <p class="details-value mb-0">{{ estudo.centroClinico?.nome }}</p>
+          </div>
+        </div>
+        
+        <hr class="my-4">
+
+        <h4 class="h5 mb-3">Critérios de Elegibilidade</h4>
+        <div class="accordion" id="criteriosAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInclusao">
+                <strong>Critérios de Inclusão</strong>
+              </button>
+            </h2>
+            <div id="collapseInclusao" class="accordion-collapse collapse" data-bs-parent="#criteriosAccordion">
+              <div class="accordion-body">
+                <ul class="list-group list-group-flush">
+                  <li *ngFor="let criterio of estudo.criteriosInclusao" class="list-group-item">{{ criterio }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExclusao">
+                <strong>Critérios de Exclusão</strong>
+              </button>
+            </h2>
+            <div id="collapseExclusao" class="accordion-collapse collapse" data-bs-parent="#criteriosAccordion">
+              <div class="accordion-body">
+                <ul class="list-group list-group-flush">
+                  <li *ngFor="let criterio of estudo.criteriosExclusao" class="list-group-item">{{ criterio }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 text-end">
+           <button class="btn btn-danger" (click)="excluirEstudo()">
+             <i class="bi bi-trash"></i> Excluir Estudo
+           </button>
+        </div>
+        
+      </div>
+    </div>
+  </ng-template>
 </div>
