@@ -20,7 +20,7 @@ export interface EstudoClinico {
   descricao: string;         
   fase: string;               
   dataEntrada: string;        
-  participacao?: Participacao
+  participacoes?: Participacao[]
   status?: 'Recrutando' | 'Encerrado' | 'Em Breve'; 
 }
 

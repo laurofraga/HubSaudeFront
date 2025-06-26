@@ -28,7 +28,7 @@
           <p class="descricao small mb-2">{{ estudo.descricao }}</p>
           <ul class="list-unstyled small mb-3">
             <li><strong>Fase:</strong> {{ estudo.fase }}</li>
-            <li><strong>Status da sua participação:</strong> {{ estudo.participacao?.status }}</li>
+            <li><strong>Status da sua participação:</strong> {{ estudo.participacoes?.[0]?.status }}</li>
           </ul>
           <button class="btn btn-outline-primary w-100" (click)="verDetalhes(estudo.id)">
             Ver mais detalhes

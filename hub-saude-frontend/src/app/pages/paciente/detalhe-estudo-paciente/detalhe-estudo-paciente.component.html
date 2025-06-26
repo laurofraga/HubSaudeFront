@@ -1,7 +1,7 @@
 <div class="container my-5">
-  <a routerLink="/home-paciente" class="text-decoration-none fw-bold mb-3 d-inline-block">
-    <i class="bi bi-arrow-left"></i> Voltar para meus estudos
-  </a>
+  <a [routerLink]="['/home-paciente', pacienteId]" class="text-decoration-none fw-bold mb-3 d-inline-block">
+  <i class="bi bi-arrow-left"></i> Voltar para meus estudos
+</a>
 
   <div *ngIf="loading" class="d-flex justify-content-center p-5">
     <div class="spinner-border text-primary" role="status"></div>
@@ -18,7 +18,7 @@
           <button class="btn btn-primary">
             <i class="bi bi-chat-dots"></i> Falar com o centro clínico
           </button>
-          <button class="btn btn-outline-danger ms-2">
+          <button class="btn btn-outline-danger ms-2" (click)="solicitarSaida()">
             <i class="bi bi-box-arrow-left"></i> Solicitar saída do estudo
           </button>
         </div>
