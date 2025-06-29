@@ -56,14 +56,15 @@ export class DetalheEstudoPublicoComponent  {
       estudoId: this.estudo.id,
     };
     this.participacaoService.criarParticipacao(dadosParticipacao).subscribe({
-      next:(novaParticipacao: Participacao) => {
-        alert('Sua solicitação foi enviada com suceso!');
-        this.router.navigate(['/meus-estudos', this.estudo?.id]);
-      },
-      error: (err:any) => {
-        console.error ('erro ao solicitar participação:', err)
-         alert(`Erro ao enviar solicitação: ${err.error.message || 'Tente novamente.'}`);
-      }
+    next: (novaParticipacao: Participacao) => {
+      alert('Parabéns! Sua inscrição no estudo foi realizada com sucesso.');
+      
+      this.router.navigate(['/home-paciente', this.estudo?.id]);
+    },
+    error: (err: any) => {
+      console.error('Erro ao inscrever no estudo:', err);
+      alert(`Erro ao realizar inscrição: ${err.error.message || 'Tente novamente.'}`);
+    }
     });
   }
 }
