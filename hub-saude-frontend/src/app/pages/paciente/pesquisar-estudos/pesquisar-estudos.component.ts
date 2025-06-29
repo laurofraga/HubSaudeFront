@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink} from '@angular/router';
 import { EstudoClinicoService } from '../../../services/estudo-clinico.service'; 
 import { EstudoClinico } from '../../../models/home-paciente.model';
+import { ParticipacaoService } from '../../../services/participacao.service';
+
 
 @Component({
   selector: 'app-pesquisar-estudos',
@@ -15,6 +17,7 @@ export class PesquisarEstudosComponent implements OnInit {
   estudosCompativeis: EstudoClinico[] = [];
   loading = true;
   private pacienteId = 18;
+  pacienteIdLogado: number = 18;
 
   constructor(private estudoService: EstudoClinicoService) {}
 

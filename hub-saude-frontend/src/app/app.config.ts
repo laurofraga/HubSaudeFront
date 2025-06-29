@@ -11,6 +11,7 @@ import { DetalhesEstudoComponent } from './pages/estudos/detalhes-estudo/detalhe
 import { DetalheEstudoPacienteComponent } from './pages/paciente/detalhe-estudo-paciente/detalhe-estudo-paciente.component';
 import { PesquisarEstudosComponent } from './pages/paciente/pesquisar-estudos/pesquisar-estudos.component';
 import path from 'path';
+import { DetalheEstudoPublicoComponent } from './pages/paciente/detalhe-estudo-publico/detalhe-estudo-publico.component';
 
 
 export const routes: Routes = [
@@ -22,8 +23,8 @@ export const routes: Routes = [
   {path: 'centro/:id/criar-estudo', component: CriarEstudoComponent},
   {path: 'estudos/:id', component: DetalhesEstudoComponent},
   { path: 'meus-estudos/:id', component: DetalheEstudoPacienteComponent },
-  { path: 'pesquisar-estudos', component: PesquisarEstudosComponent }
-
+  { path: 'pesquisar-estudos', component: PesquisarEstudosComponent },
+  { path: 'estudos-publicos/:id', component: DetalheEstudoPublicoComponent}
 ];
 
 
