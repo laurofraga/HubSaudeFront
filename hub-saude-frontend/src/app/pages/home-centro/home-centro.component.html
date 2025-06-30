@@ -12,31 +12,47 @@
 <div class="container my-5" *ngIf="!loading && data">
 
   
-  <div *ngIf="data.estudos.length === 0" class="text-muted text-center">
-    Nenhum estudo cadastrado para este centro clínico.
-  </div>
+  <div class="row" *ngIf="data.estudos.length > 0; else semEstudos">
+    
+    <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let estudo of data.estudos">
+      
+     
+      <div class="estudo-card card h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <div class="mb-3">
+            <span class="badge bg-primary-soft text-primary">{{ estudo.fase }}</span>
+          </div>
+          <h5 class="card-title">{{ estudo.titulo }}</h5>
+          
+          <p class="card-text text-muted flex-grow-1">{{ estudo.descricao | slice:0:100 }}...</p>
+          
+          <ul class="list-unstyled small text-muted mb-3">
+            <li>
+              <strong>Período:</strong>
+              {{ estudo.dataInicio | date:'dd/MM/yy' }} - {{ estudo.dataFim | date:'dd/MM/yy' }}
+            </li>
+            <li>
+              <strong>Pacientes Inscritos:</strong> 
+              <span class="fw-bold text-dark">{{ estudo.totalPacientes || 0 }}</span>
+            </li>
+          </ul>
 
-  
-  <div class="row g-4" *ngIf="data.estudos.length">
-    <div class="col-md-6 col-lg-4" *ngFor="let estudo of data.estudos">
-      <div class="estudo-card card h-100 p-3 border border-dark shadow-sm">
-
-        <h5 class="text-primary">{{ estudo.titulo }}</h5>
-        <p class="descricao small mb-2">{{ estudo.descricao }}</p>
-
-        <ul class="list-unstyled small mb-3">
-          <li><strong>Fase:</strong> {{ estudo.fase }}</li>
-          <li><strong>Período:</strong>
-            {{ estudo.dataInicio | date:'dd/MM/yyyy' }} -
-            {{ estudo.dataFim | date:'dd/MM/yyyy' }}
-          </li>
-          <li><strong>Pacientes:</strong> {{ estudo.totalPacientes }}</li>
-        </ul>
-
-       <button *ngIf="estudo.id" class="btn btn-outline-primary w-100" (click)="verDetalhes(estudo.id)">
-            Ver Detalhes
-        </button>
+          
+          <button *ngIf="estudo.id" class="btn btn-outline-primary mt-auto" (click)="verDetalhes(estudo.id)">
+            Gerenciar Estudo
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
+  <ng-template #semEstudos>
+    <div class="text-center py-5">
+      <div class="alert alert-secondary d-inline-block">
+        <h4 class="alert-heading">Nenhum estudo encontrado.</h4>
+        <p class="mb-0">Clique em "Criar Estudo" para começar.</p>
+      </div>
+    </div>
+  </ng-template>
+
 </div>

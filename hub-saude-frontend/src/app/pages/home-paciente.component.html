@@ -20,21 +20,36 @@
   </div>
   
   <h4 class="mb-4">Estudos em que você participa</h4>
-  <div class="row g-4">
+
+    <div class="row">
     <ng-container *ngIf="data.estudos && data.estudos.length > 0; else semEstudo">
-      <div class="col-md-6 col-lg-4" *ngFor="let estudo of data.estudos">
-        <div class="estudo-card card h-100 p-3">
-          <h5 class="text-primary">{{ estudo.titulo }}</h5>
-          <p class="descricao small mb-2">{{ estudo.descricao }}</p>
-          <ul class="list-unstyled small mb-3">
-            <li><strong>Fase:</strong> {{ estudo.fase }}</li>
-            <li><strong>Status da sua participação:</strong> {{ estudo.participacoes?.[0]?.status }}</li>
-          </ul>
-          <button class="btn btn-outline-primary w-100" (click)="verDetalhes(estudo.id)">
-            Ver mais detalhes
-          </button>
+      
+      <div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let estudo of data.estudos">
+        
+       
+        <div class="estudo-card card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <div class="mb-3">
+             
+              <span class="badge bg-primary-soft text-primary">{{ estudo.fase }}</span>
+            </div>
+            <h5 class="card-title">{{ estudo.titulo }}</h5>
+            <p class="card-text text-muted flex-grow-1">{{ estudo.descricao | slice:0:100 }}...</p>
+            
+            
+            <div class="small text-muted mb-3">
+              <strong>Status da sua participação:</strong> 
+              <span class="fw-bold text-success">{{ estudo.participacoes?.[0]?.status }}</span>
+            </div>
+
+            
+            <button *ngIf="estudo.id" class="btn btn-outline-primary mt-auto" (click)="verDetalhes(estudo.id)">
+              Ver mais detalhes
+            </button>
+          </div>
         </div>
       </div>
+
     </ng-container>
 
     <ng-template #semEstudo>
