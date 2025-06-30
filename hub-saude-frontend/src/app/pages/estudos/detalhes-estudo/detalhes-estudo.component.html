@@ -3,15 +3,8 @@
     <i class="bi bi-arrow-left"></i> Voltar para a lista
   </a>
 
-  <div
-    *ngIf="!estudo; else studyDetails"
-    class="d-flex justify-content-center p-5"
-  >
-    <div
-      class="spinner-border text-primary"
-      style="width: 3rem; height: 3rem"
-      role="status"
-    >
+  <div *ngIf="!estudo; else studyDetails" class="d-flex justify-content-center p-5">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
       <span class="visually-hidden">Carregando...</span>
     </div>
   </div>
@@ -21,14 +14,14 @@
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-start mb-3">
           <div>
-            <h2 class="h3 category-text mb-1">{{ estudo.titulo }}</h2>
+            <!-- Corrigido para usar o h2 para o título principal e um p para a categoria -->
+            <p class="category-text mb-1">Estudo Clínico</p>
+            <h2 class="h3 mb-1">{{ estudo.titulo }}</h2>
           </div>
-          <a (click)="editarEstudo()" class="action-link flex-shrink-0 ms-3"
-            >Editar Estudo</a
-          >
+          <a [routerLink]="['/estudos/editar', estudo.id]" class="btn btn-outline-primary">Editar Estudo</a>
         </div>
 
-        <p class="text-muted">{{ estudo.descrica }}</p>
+        <p class="text-muted">{{ estudo.descricao || estudo.descrica }}</p>
 
         <hr class="my-4" />
 
@@ -38,69 +31,40 @@
             <p class="details-value mb-0">{{ estudo.fase }}</p>
           </div>
           <div class="col-12 col-md-6">
+            <p class="details-label mb-1">Centro Clínico:</p>
             <p class="details-value mb-0">{{ estudo.centroClinico?.nome }}</p>
           </div>
         </div>
 
         <hr class="my-4" />
 
-        <h4 class="h5 mb-3">Critérios de Elegibilidade</h4>
-        <div class="accordion" id="criteriosAccordion">
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseInclusao"
-              >
-                <strong>Critérios de Inclusão</strong>
-              </button>
-            </h2>
-            <div
-              id="collapseInclusao"
-              class="accordion-collapse collapse"
-              data-bs-parent="#criteriosAccordion"
-            >
-              <div class="accordion-body">
-                <ul class="list-group list-group-flush">
-                  <li
-                    *ngFor="let criterio of estudo.criteriosInclusao"
-                    class="list-group-item"
-                  >
-                    {{ criterio }}
-                  </li>
-                </ul>
-              </div>
-            </div>
+        
+        <div class="row">
+          
+          <div class="col-md-6">
+            <h5 class="fw-bold mb-3">Critérios de Inclusão</h5>
+            
+            <ul *ngIf="estudo.criteriosInclusao && estudo.criteriosInclusao.length > 0" class="list-group list-group-flush">
+              <li *ngFor="let criterio of estudo.criteriosInclusao" class="list-group-item">
+                {{ criterio }}
+              </li>
+            </ul>
+            <p *ngIf="!estudo.criteriosInclusao || estudo.criteriosInclusao.length === 0" class="text-muted small">
+              Nenhum critério de inclusão informado.
+            </p>
           </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseExclusao"
-              >
-                <strong>Critérios de Exclusão</strong>
-              </button>
-            </h2>
-            <div
-              id="collapseExclusao"
-              class="accordion-collapse collapse"
-              data-bs-parent="#criteriosAccordion"
-            >
-              <div class="accordion-body">
-                <ul class="list-group list-group-flush">
-                  <li
-                    *ngFor="let criterio of estudo.criteriosExclusao"
-                    class="list-group-item"
-                  >
-                    {{ criterio }}
-                  </li>
-                </ul>
-              </div>
-            </div>
+
+          
+          <div class="col-md-6">
+            <h5 class="fw-bold mb-3">Critérios de Exclusão</h5>
+            <ul *ngIf="estudo.criteriosExclusao && estudo.criteriosExclusao.length > 0" class="list-group list-group-flush">
+              <li *ngFor="let criterio of estudo.criteriosExclusao" class="list-group-item">
+                {{ criterio }}
+              </li>
+            </ul>
+            <p *ngIf="!estudo.criteriosExclusao || estudo.criteriosExclusao.length === 0" class="text-muted small">
+              Nenhum critério de exclusão informado.
+            </p>
           </div>
         </div>
 
@@ -109,11 +73,7 @@
             <i class="bi bi-trash"></i> Excluir Estudo
           </button>
         </div>
-        <a
-          [routerLink]="['/estudos/editar', estudo.id]"
-          class="btn btn-primary me-2"
-          >Editar</a>
-        <button class="btn btn-secondary" (click)="voltar()">Voltar</button>
+        
       </div>
     </div>
   </ng-template>

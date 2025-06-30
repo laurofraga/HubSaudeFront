@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { EstudoClinico } from '../../../models/estudo.model';
+import { EstudoClinicoService } from '../../../services/estudo-clinico.service';
 
 @Component({
   selector: 'app-detalhes-estudo',
@@ -51,7 +52,19 @@ export class DetalhesEstudoComponent implements OnInit {
   editarEstudo(): void {
     this.router.navigate(['/centro', this.estudo.idCentro, 'criar-estudo'], { queryParams: { id: this.Id } });
   }
-  voltar(): void {
-    this.router.navigate(['/centro-home', this.estudo.idCentro]);
+ 
+    voltar(): void {
+    
+    const centroId = this.estudo?.centroClinico?.id;
+
+    if (centroId) {
+      
+      this.router.navigate(['/centro-home', centroId]);
+    } else {
+      
+      console.error("Não foi possível determinar o ID do centro clínico para voltar.");
+      
+    }
   }
-}
+  }
+
