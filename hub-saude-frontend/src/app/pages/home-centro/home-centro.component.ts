@@ -4,7 +4,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CentroService } from '../../services/centro.service';
-import { HomeCentroData, EstudoCentro } from '../../models/home-centro.model';
+import { HomeCentroData } from '../../models/home-centro.model';
+import { EstudoClinico } from '../../models/estudo.model'; 
+
 
 @Component({
   selector   : 'app-home-centro',
@@ -27,10 +29,10 @@ export class HomeCentroComponent implements OnInit {
     this.centroService.getHomeCentroData(centroId).subscribe({
       next: (res: HomeCentroData) => {
         
-        const estudos = res.estudos.map((e: EstudoCentro) => ({
+        const estudos = res.estudos.map((e: EstudoClinico) => ({
           ...e,
           descricao: (e as any).descrica ?? e.descricao
-        })) as EstudoCentro[];
+        })) as EstudoClinico[];
 
         this.data = { ...res, estudos };
         this.loading = false;

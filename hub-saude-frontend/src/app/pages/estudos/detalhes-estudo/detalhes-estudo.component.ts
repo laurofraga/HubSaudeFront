@@ -2,12 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-detalhes-estudo',
   templateUrl: './detalhes-estudo.component.html',
   styleUrls: ['./detalhes-estudo.component.scss'], 
-  imports: [CommonModule]
+  imports: [CommonModule,RouterLink]
 })
 export class DetalhesEstudoComponent implements OnInit {
   estudo: any;

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {PacienteService} from '../services/paciente.service';
-import { HomePacienteData, EstudoClinico } from '../models/home-paciente.model';
+import { HomePacienteData } from '../models/home-paciente.model';
+import { EstudoClinico } from '../models/estudo.model';
 import { Router } from '@angular/router';
 
 @Component({

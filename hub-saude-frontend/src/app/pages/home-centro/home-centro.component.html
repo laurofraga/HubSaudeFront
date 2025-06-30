@@ -33,8 +33,8 @@
           <li><strong>Pacientes:</strong> {{ estudo.totalPacientes }}</li>
         </ul>
 
-        <button class="btn btn-outline-primary w-100" (click)="verDetalhes(estudo.id)">
-          Ver detalhes
+       <button *ngIf="estudo.id" class="btn btn-outline-primary w-100" (click)="verDetalhes(estudo.id)">
+            Ver Detalhes
         </button>
       </div>
     </div>

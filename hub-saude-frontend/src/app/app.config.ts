@@ -24,7 +24,8 @@ export const routes: Routes = [
   {path: 'estudos/:id', component: DetalhesEstudoComponent},
   { path: 'meus-estudos/:id', component: DetalheEstudoPacienteComponent },
   { path: 'pesquisar-estudos', component: PesquisarEstudosComponent },
-  { path: 'estudos-publicos/:id', component: DetalheEstudoPublicoComponent}
+  { path: 'estudos-publicos/:id', component: DetalheEstudoPublicoComponent},
+  { path: 'estudos/editar/:id', component: CriarEstudoComponent },
 ];
 
 

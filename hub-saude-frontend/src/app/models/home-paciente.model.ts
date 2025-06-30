@@ -1,3 +1,5 @@
+import { EstudoClinico } from './estudo.model';
+
 export interface Paciente {
   id: number;
   nome: string;
@@ -14,15 +16,6 @@ export interface Participacao {
   dataParticipacao: string; 
 }
 
-export interface EstudoClinico {
-  id: number;
-  titulo: string;
-  descricao: string;         
-  fase: string;               
-  dataEntrada: string;        
-  participacoes?: Participacao[]
-  status?: 'Recrutando' | 'Encerrado' | 'Em Breve'; 
-}
 
 export interface HomePacienteData {
    paciente: Paciente;

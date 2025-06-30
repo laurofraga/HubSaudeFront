@@ -1,3 +1,5 @@
+import { EstudoClinico } from "./estudo.model";
+
 export interface CentroHome {
   id: number;
   nome: string;
@@ -6,17 +8,8 @@ export interface CentroHome {
   telefone: string;
 }
 
-export interface EstudoCentro {
-  id: number;
-  titulo: string;
-  descricao: string;        
-  fase: string;             
-  dataInicio: string;       
-  dataFim: string;          
-  totalPacientes: number;
-}
 
 export interface HomeCentroData {
   centro: CentroHome;
-  estudos: EstudoCentro[];
+  estudos: EstudoClinico[];
 }

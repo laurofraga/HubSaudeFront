@@ -1,20 +1,37 @@
 <div class="container my-5">
   <h3>Criar novo estudo</h3>
+<h3>{{ isEditMode ? 'Editar Estudo' : 'Criar Novo Estudo' }}</h3>
   <form (ngSubmit)="enviar()" #form="ngForm" class="mt-4">
-
     <div class="mb-3">
       <label class="form-label">Título</label>
-      <input type="text" class="form-control" name="titulo" [(ngModel)]="estudo.titulo" required>
+      <input
+        type="text"
+        class="form-control"
+        name="titulo"
+        [(ngModel)]="estudo.titulo"
+        required
+      />
     </div>
 
     <div class="mb-3">
       <label class="form-label">Descrição</label>
-      <textarea class="form-control" name="descricao" [(ngModel)]="estudo.descrica" rows="3" required></textarea>
+      <textarea
+        class="form-control"
+        name="descricao"
+        [(ngModel)]="estudo.descrica"
+        rows="3"
+        required
+      ></textarea>
     </div>
 
     <div class="mb-3">
       <label class="form-label">Fase</label>
-      <select class="form-select" name="fase" [(ngModel)]="estudo.fase" required>
+      <select
+        class="form-select"
+        name="fase"
+        [(ngModel)]="estudo.fase"
+        required
+      >
         <option value="">Selecione a fase</option>
         <option *ngFor="let f of fases" [value]="f">{{ f }}</option>
       </select>
@@ -22,37 +39,48 @@
 
     <div class="mb-3">
       <label class="form-label">Data Início</label>
-      <input type="date" class="form-control" name="dataInicio" [(ngModel)]="estudo.dataInicio" required>
+      <input
+        type="date"
+        class="form-control"
+        name="dataInicio"
+        [(ngModel)]="estudo.dataInicio"
+        required
+      />
     </div>
 
     <div class="mb-3">
       <label class="form-label">Data Fim</label>
-      <input type="date" class="form-control" name="dataFim" [(ngModel)]="estudo.dataFim" required>
+      <input
+        type="date"
+        class="form-control"
+        name="dataFim"
+        [(ngModel)]="estudo.dataFim"
+        required
+      />
     </div>
     <div class="mb-3">
   <label class="form-label">Critérios de Inclusão</label>
-  <div *ngFor="let criterio of estudo.criteriosInclusao; let i = index" class="input-group mb-2">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="estudo.criteriosInclusao[i]"
-      name="criterioInclusao{{ i }}"
-      required
-    >
+  <div *ngIf="estudo.criteriosInclusao">
+    <div *ngFor="let criterio of estudo.criteriosInclusao; let i = index; trackBy: trackByFn" class="input-group mb-2">
+      <input type="text" class="form-control" [(ngModel)]="estudo.criteriosInclusao[i]" name="criterioInclusao{{ i }}" required>
+      <button type="button" class="btn btn-outline-danger" (click)="removerCriterio('inclusao', i)" [disabled]="estudo.criteriosInclusao.length === 1">&times;</button>
+    </div>
   </div>
+  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="adicionarCriterio('inclusao')">+ Adicionar Critério</button>
 </div>
-  <div class="mb-3">
+
+<div class="mb-3">
   <label class="form-label">Critérios de Exclusão</label>
-  <div *ngFor="let criterio of estudo.criteriosExclusao; let i = index" class="input-group mb-2">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="estudo.criteriosExclusao[i]"
-      name="criterioExclusao{{ i }}"
-      required
-    >
+  <div *ngIf="estudo.criteriosExclusao">
+    <div *ngFor="let criterio of estudo.criteriosExclusao; let i = index; trackBy: trackByFn" class="input-group mb-2">
+      <input type="text" class="form-control" [(ngModel)]="estudo.criteriosExclusao[i]" name="criterioExclusao{{ i }}" required>
+      <button type="button" class="btn btn-outline-danger" (click)="removerCriterio('exclusao', i)" [disabled]="estudo.criteriosExclusao.length === 1">&times;</button>
+    </div>
   </div>
+  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="adicionarCriterio('exclusao')">+ Adicionar Critério</button>
 </div>
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Criar Estudo</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      Criar Estudo
+    </button>
   </form>
 </div>

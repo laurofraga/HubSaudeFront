@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { EstudoClinico, Participacao } from '../../../models/home-paciente.model';
+import {  Participacao } from '../../../models/home-paciente.model';
 import { EstudoClinicoService } from '../../../services/estudo-clinico.service';
 import { ParticipacaoService } from '../../../services/participacao.service';
-
+import { EstudoClinico } from '../../../models/estudo.model';
 
 @Component({
   selector: 'app-detalhe-estudo-publico',

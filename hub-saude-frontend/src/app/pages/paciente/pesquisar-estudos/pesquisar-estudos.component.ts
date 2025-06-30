@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink} from '@angular/router';
+import { RouterLink} from '@angular/router';
 import { EstudoClinicoService } from '../../../services/estudo-clinico.service'; 
-import { EstudoClinico } from '../../../models/home-paciente.model';
+import { EstudoClinico } from '../../../models/estudo.model';
 import { ParticipacaoService } from '../../../services/participacao.service';
 
 

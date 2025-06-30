@@ -17,7 +17,6 @@
         <p class="descricao small mb-2">{{ estudo.descricao }}</p>
         <ul class="list-unstyled small mb-3">
           <li><strong>Fase:</strong> {{ estudo.fase }}</li>
-          <li><strong>Status do Estudo:</strong> <span class="badge bg-success">{{ estudo.status }}</span></li>
         </ul>
       </div>
       <a [routerLink]="['/estudos-publicos', estudo.id]" class="btn btn-outline-primary w-100 mt-auto">

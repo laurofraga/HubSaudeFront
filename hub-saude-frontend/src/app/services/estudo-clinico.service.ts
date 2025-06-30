@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { EstudoClinico } from '../models/home-paciente.model'; 
+import { EstudoClinico } from '../models/estudo.model'; 
 
 @Injectable({
   providedIn: 'root'
@@ -19,4 +18,12 @@ export class EstudoClinicoService {
   buscarEstudosCompativeis(pacienteId: number): Observable<EstudoClinico[]> {
     return this.http.get<EstudoClinico[]>(`${this.apiUrl}/pacientes/estudos-compativeis/${pacienteId}`);
   }
+  
+  criarEstudo(estudo: EstudoClinico): Observable<EstudoClinico> {
+    return this.http.post<EstudoClinico>(`${this.apiUrl}/estudos`, estudo);
+  }
+
+  atualizarEstudo(id: number, estudo: EstudoClinico): Observable<EstudoClinico> {
+  return this.http.put<EstudoClinico>(`${this.apiUrl}/estudos/${id}`, estudo);
+}
 }
