@@ -14,7 +14,7 @@ import { EstudoClinico } from '../../../models/estudo.model';
 })
 
 export class CriarEstudoComponent implements OnInit{
- centroId!: number;
+
 
    estudo: EstudoClinico = {
     titulo: '',
@@ -31,6 +31,7 @@ export class CriarEstudoComponent implements OnInit{
  
  isEditMode = false;
   private estudoId: number | null = null;
+  private centroId: number | null = null;
 
    constructor(
      private estudoService: EstudoClinicoService,
@@ -87,17 +88,35 @@ export class CriarEstudoComponent implements OnInit{
   }
 
 enviar(): void {
+    const payload: Partial<EstudoClinico> = {
+      titulo: this.estudo.titulo,
+      descricao: this.estudo.descricao, 
+      fase: this.estudo.fase,
+      dataInicio: this.estudo.dataInicio,
+      dataFim: this.estudo.dataFim,
+      criteriosInclusao: this.estudo.criteriosInclusao,
+      criteriosExclusao: this.estudo.criteriosExclusao,
+    };
+
     if (this.isEditMode && this.estudoId) {
-      
-      this.estudoService.atualizarEstudo(this.estudoId, this.estudo).subscribe(() => {
-        alert('Estudo atualizado com sucesso!');
-        this.router.navigate(['/estudos', this.estudoId]); 
+      this.estudoService.atualizarEstudo(this.estudoId, payload).subscribe({
+        next: () => {
+          alert('Estudo atualizado com sucesso!');
+          this.router.navigate(['/estudos', this.estudoId]);
+        },
+        error: (err) => console.error('Erro ao atualizar', err)
       });
     } else {
-      
-      this.estudoService.criarEstudo(this.estudo).subscribe(novoEstudo => {
-        alert('Estudo criado com sucesso!');
-        this.router.navigate(['/centro-home', novoEstudo.centroClinico.id]); 
+      this.estudoService.criarEstudo(payload).subscribe({
+        next: (novoEstudo) => {
+          alert('Estudo criado com sucesso!');
+          if (novoEstudo?.centroClinico?.id) {
+            this.router.navigate(['/centro-home', novoEstudo.centroClinico.id]);
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        error: (err) => console.error('Erro ao criar estudo:', err)
       });
     }
   }

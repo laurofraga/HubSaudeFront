@@ -19,7 +19,7 @@ export class EstudoClinicoService {
     return this.http.get<EstudoClinico[]>(`${this.apiUrl}/pacientes/estudos-compativeis/${pacienteId}`);
   }
   
-  criarEstudo(estudo: EstudoClinico): Observable<EstudoClinico> {
+  criarEstudo(estudo: Partial<EstudoClinico>): Observable<EstudoClinico> {
     return this.http.post<EstudoClinico>(`${this.apiUrl}/estudos`, estudo);
   }
 
@@ -27,7 +27,7 @@ export class EstudoClinicoService {
     return this.http.delete<void>(`${this.apiUrl}/estudos/${id}`);
   }
 
-  atualizarEstudo(id: number, estudo: EstudoClinico): Observable<EstudoClinico> {
-  return this.http.put<EstudoClinico>(`${this.apiUrl}/estudos/${id}`, estudo);
-}
+ atualizarEstudo(id: number, estudo: Partial<EstudoClinico>): Observable<EstudoClinico> {
+    return this.http.put<EstudoClinico>(`${this.apiUrl}/estudos/${id}`, estudo);
+  }
 }
