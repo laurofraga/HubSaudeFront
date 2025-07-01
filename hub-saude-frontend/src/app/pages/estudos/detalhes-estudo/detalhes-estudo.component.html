@@ -2,67 +2,56 @@
   <a (click)="voltar()" class="action-link mb-3 d-inline-block">
     <i class="bi bi-arrow-left"></i> Voltar para a lista
   </a>
-
-  <div *ngIf="!estudo; else studyDetails" class="d-flex justify-content-center p-5">
-    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
-      <span class="visually-hidden">Carregando...</span>
-    </div>
-  </div>
-
-  <ng-template #studyDetails>
+<div *ngIf="estudo as estudoData; else loadingSpinner">
+    
     <div class="card border-0 shadow-sm p-3 p-md-4">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-start mb-3">
           <div>
-            <!-- Corrigido para usar o h2 para o título principal e um p para a categoria -->
             <p class="category-text mb-1">Estudo Clínico</p>
-            <h2 class="h3 mb-1">{{ estudo.titulo }}</h2>
+            <h2 class="h3 mb-1">{{ estudoData.titulo }}</h2>
           </div>
-          <a [routerLink]="['/estudos/editar', estudo.id]" class="btn btn-outline-primary">Editar Estudo</a>
+          <a *ngIf="estudoData.id" [routerLink]="['/estudos/editar', estudoData.id]" class="btn btn-outline-primary">Editar Estudo</a>
         </div>
 
-        <p class="text-muted">{{ estudo.descricao || estudo.descrica }}</p>
+        <p class="text-muted">{{ estudoData.descricao || estudoData.descrica }}</p>
 
         <hr class="my-4" />
 
         <div class="row gy-4">
           <div class="col-6 col-md-3">
             <p class="details-label mb-1">Fase do Estudo:</p>
-            <p class="details-value mb-0">{{ estudo.fase }}</p>
+            <p class="details-value mb-0">{{ estudoData.fase }}</p>
           </div>
           <div class="col-12 col-md-6">
             <p class="details-label mb-1">Centro Clínico:</p>
-            <p class="details-value mb-0">{{ estudo.centroClinico?.nome }}</p>
+            <p class="details-value mb-0">{{ estudoData.centroClinico?.nome }}</p>
           </div>
         </div>
 
         <hr class="my-4" />
 
-        
         <div class="row">
-          
           <div class="col-md-6">
             <h5 class="fw-bold mb-3">Critérios de Inclusão</h5>
-            
-            <ul *ngIf="estudo.criteriosInclusao && estudo.criteriosInclusao.length > 0" class="list-group list-group-flush">
-              <li *ngFor="let criterio of estudo.criteriosInclusao" class="list-group-item">
+            <ul *ngIf="estudoData.criteriosInclusao && estudoData.criteriosInclusao.length > 0" class="list-group list-group-flush">
+              <li *ngFor="let criterio of estudoData.criteriosInclusao" class="list-group-item">
                 {{ criterio }}
               </li>
             </ul>
-            <p *ngIf="!estudo.criteriosInclusao || estudo.criteriosInclusao.length === 0" class="text-muted small">
+            <p *ngIf="!estudoData.criteriosInclusao || estudoData.criteriosInclusao.length === 0" class="text-muted small">
               Nenhum critério de inclusão informado.
             </p>
           </div>
 
-          
           <div class="col-md-6">
             <h5 class="fw-bold mb-3">Critérios de Exclusão</h5>
-            <ul *ngIf="estudo.criteriosExclusao && estudo.criteriosExclusao.length > 0" class="list-group list-group-flush">
-              <li *ngFor="let criterio of estudo.criteriosExclusao" class="list-group-item">
+            <ul *ngIf="estudoData.criteriosExclusao && estudoData.criteriosExclusao.length > 0" class="list-group list-group-flush">
+              <li *ngFor="let criterio of estudoData.criteriosExclusao" class="list-group-item">
                 {{ criterio }}
               </li>
             </ul>
-            <p *ngIf="!estudo.criteriosExclusao || estudo.criteriosExclusao.length === 0" class="text-muted small">
+            <p *ngIf="!estudoData.criteriosExclusao || estudoData.criteriosExclusao.length === 0" class="text-muted small">
               Nenhum critério de exclusão informado.
             </p>
           </div>
@@ -74,6 +63,15 @@
           </button>
         </div>
         
+      </div>
+    </div>
+
+  </div>
+
+  <ng-template #loadingSpinner>
+    <div class="d-flex justify-content-center p-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
+        <span class="visually-hidden">Carregando...</span>
       </div>
     </div>
   </ng-template>
