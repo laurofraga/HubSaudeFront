@@ -70,10 +70,6 @@ export class DetalhesEstudoComponent implements OnInit {
       });
     }
   }
-
-  /*editarEstudo(): void {
-    this.router.navigate(['/centro', this.estudo.idCentro, 'criar-estudo'], { queryParams: { id: this.Id } });
-  }*/
  
     voltar(): void {
     

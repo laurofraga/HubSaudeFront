@@ -1,13 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, tap } from 'rxjs';
 
-interface LoginResponse {
+export interface UserData {
+  id: number;
+  nome: string;
+}
+
+
+export interface LoginResponse {
   token: string;
-  tipo: string;
-  user: {
-    id: number;
-  };
+  tipo: 'paciente' | 'centro';
+  user: UserData;
+}
+
+
+export interface UsuarioLogado {
+  id: number;
+  nome: string;
+  tipo: 'paciente' | 'centro';
+  token: string; 
 }
 
 export  interface PacienteRegister {
@@ -20,7 +33,6 @@ export  interface PacienteRegister {
   endereco: string;
 }
 
-
 export interface CentroRegister {
   nome: string;
   email: string;
@@ -31,13 +43,54 @@ export interface CentroRegister {
 
 
 @Injectable({providedIn: 'root'})
+
 export class AuthService {
-  private baseUrl = '/api/auth';  
+  private baseUrl = '/api/auth'; 
+  
+  private usuarioAtualSubject = new BehaviorSubject<UsuarioLogado | null>(null);
+  public usuarioAtual$ = this.usuarioAtualSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+   constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.carregarUsuarioDoStorage();
+  }
 
-  login(email: string, senha: string, tipo: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { email, senha, tipo });
+ login(credentials: { email: string, senha: string, tipo: string }): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, credentials).pipe(
+      tap(response => {
+        const usuarioParaSalvar: UsuarioLogado = {
+          id: response.user.id,
+          nome: response.user.nome,
+          tipo: response.tipo,
+          token: response.token
+        };
+
+        
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
+        }
+        
+        this.usuarioAtualSubject.next(usuarioParaSalvar);
+      })
+    );
+  }
+
+   logout(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('usuarioLogado');
+    }
+    this.usuarioAtualSubject.next(null);
+  }
+  private carregarUsuarioDoStorage(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const usuarioJson = localStorage.getItem('usuarioLogado');
+      if (usuarioJson) {
+        const usuario: UsuarioLogado = JSON.parse(usuarioJson);
+        this.usuarioAtualSubject.next(usuario);
+      }
+    }
   }
 
  registerPaciente(data: PacienteRegister): Observable<any> {

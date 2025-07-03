@@ -5,6 +5,8 @@ import {  Participacao } from '../../../models/home-paciente.model';
 import { EstudoClinicoService } from '../../../services/estudo-clinico.service';
 import { ParticipacaoService } from '../../../services/participacao.service';
 import { EstudoClinico } from '../../../models/estudo.model';
+import { AuthService } from '../../../auth/auth.service';
+
 
 @Component({
   selector: 'app-detalhe-estudo-publico',
@@ -14,57 +16,62 @@ import { EstudoClinico } from '../../../models/estudo.model';
   styleUrl: './detalhe-estudo-publico.component.scss'
 })
 export class DetalheEstudoPublicoComponent  {
-  estudo: EstudoClinico | undefined;
+   estudo: EstudoClinico | undefined;
   loading = true;
-  pacienteIdLogado: number = 18;
-   pacienteId: number = 18;
+  pacienteIdLogado: number | null = null;
+  pacienteId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private estudoService: EstudoClinicoService,
-    private participacaoService: ParticipacaoService
+    private participacaoService: ParticipacaoService,
+    private authService: AuthService
   ){}
 
   ngOnInit(): void {
-    const estudoId = this.route.snapshot.paramMap.get('id')
-    if (estudoId){
+    this.authService.usuarioAtual$.subscribe(usuario => {
+      if (usuario && usuario.tipo === 'paciente') {
+        this.pacienteIdLogado = usuario.id;
+        this.pacienteId = usuario.id; 
+      }
+    });
+    const estudoId = this.route.snapshot.paramMap.get('id');
+    if (estudoId) {
       this.estudoService.buscarPorId(+estudoId).subscribe({
         next: (data) => {
-          console.log('Dados recebidos da API:', data);
-
           if (data) {
-          const descricaoCorrigida = data.descricao || (data as any).descrica || '';
-          this.estudo = { ...data, descricao: descricaoCorrigida };
-        }
-        
-          this.estudo = data;
+            const descricaoCorrigida = data.descricao || (data as any).descrica || '';
+            this.estudo = { ...data, descricao: descricaoCorrigida };
+          }
           this.loading = false;
         },
         error: (err: any) => {
-          console.log('Erro ao buscar detalhes do estudo:', err);
+          console.error('Erro ao buscar detalhes do estudo:', err);
           this.loading = false;
         }
       });
     }
   }
-  solicitarParticipacao(): void{
-    if (!this.estudo?.id) return;
 
+  solicitarParticipacao(): void{
+    if (!this.estudo?.id || !this.pacienteIdLogado) {
+      alert("Não foi possível identificar o estudo ou o paciente logado.");
+      return;
+    }
     const dadosParticipacao = {
       pacienteId: this.pacienteIdLogado, 
       estudoId: this.estudo.id,
     };
     this.participacaoService.criarParticipacao(dadosParticipacao).subscribe({
-    next: (novaParticipacao: Participacao) => {
-      alert('Parabéns! Sua inscrição no estudo foi realizada com sucesso.');
-      
-      this.router.navigate(['/home-paciente', this.estudo?.id]);
-    },
-    error: (err: any) => {
-      console.error('Erro ao inscrever no estudo:', err);
-      alert(`Erro ao realizar inscrição: ${err.error.message || 'Tente novamente.'}`);
-    }
+      next: (novaParticipacao: Participacao) => {
+        alert('Parabéns! Sua inscrição no estudo foi realizada com sucesso.');
+        this.router.navigate(['/home-paciente', this.pacienteIdLogado]);
+      },
+      error: (err: any) => {
+        console.error('Erro ao inscrever no estudo:', err);
+        alert(`Erro ao realizar inscrição: ${err.error.message || 'Tente novamente.'}`);
+      }
     });
   }
 }

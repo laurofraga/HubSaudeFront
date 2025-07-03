@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EstudoClinicoService } from '../../../services/estudo-clinico.service'; 
 import { EstudoClinico } from '../../../models/estudo.model';
 import { ParticipacaoService } from '../../../services/participacao.service';
-
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-detalhe-estudo-paciente',
@@ -16,16 +16,22 @@ import { ParticipacaoService } from '../../../services/participacao.service';
 export class DetalheEstudoPacienteComponent {
    estudo: EstudoClinico | undefined;
    loading = true;
-  pacienteId: number = 18;
+  pacienteId: number | null = null;
 
    constructor(
     private router: Router,
     private route: ActivatedRoute,
     private estudoService: EstudoClinicoService,
-    private participacaoService: ParticipacaoService
+    private participacaoService: ParticipacaoService,
+    private authService: AuthService
    ){}
 
    ngOnInit(): void {
+    this.authService.usuarioAtual$.subscribe(usuario => {
+      if (usuario && usuario.tipo === 'paciente') {
+        this.pacienteId = usuario.id;
+      }
+    });
     const estudoId =  this.route.snapshot.paramMap.get('id');
     if (estudoId) {
       const estudoIdNumber = Number(estudoId);

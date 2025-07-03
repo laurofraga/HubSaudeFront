@@ -4,6 +4,8 @@ import {PacienteService} from '../services/paciente.service';
 import { HomePacienteData } from '../models/home-paciente.model';
 import { EstudoClinico } from '../models/estudo.model';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService, UsuarioLogado } from '../auth/auth.service';
+
 
 @Component({
   selector: 'app-home-paciente',
@@ -17,20 +19,27 @@ export class HomePacienteComponent implements OnInit {
   data!: HomePacienteData;
   loading = true;
 
-  constructor(private pacienteService: PacienteService,private router: Router) {}
-   ngOnInit(): void {
-    const pacienteId = 18;
+  constructor(
+    private pacienteService: PacienteService,
+    private authService: AuthService,
+    private router: Router) {}
+
+  ngOnInit(): void {
+    this.authService.usuarioAtual$.subscribe(usuario => {
+      if (usuario && usuario.tipo === 'paciente') {
+        this.carregarDados(usuario.id);
+      } else {
+        console.error("Nenhum paciente logado encontrado. Redirecionando para o login.");
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+  carregarDados(pacienteId: number): void {
     this.pacienteService
       .getHomePacienteData(pacienteId)
       .subscribe({
         next: (res) => {
-          const estudosCorrigidos = res.estudos.map(estudo => {
-            return {
-              ...estudo,
-              descricao: estudo.descricao || (estudo as any).descrica || ''
-            };
-          });
-          this.data = { ...res, estudos: estudosCorrigidos };
+          this.data = res;
           this.loading = false;
         },
         error: (err) => {

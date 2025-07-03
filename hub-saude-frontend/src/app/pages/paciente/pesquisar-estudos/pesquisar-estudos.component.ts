@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink} from '@angular/router';
+import { Router, RouterLink} from '@angular/router';
 import { EstudoClinicoService } from '../../../services/estudo-clinico.service'; 
 import { EstudoClinico } from '../../../models/estudo.model';
 import { ParticipacaoService } from '../../../services/participacao.service';
-
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-pesquisar-estudos',
@@ -16,21 +16,36 @@ import { ParticipacaoService } from '../../../services/participacao.service';
 export class PesquisarEstudosComponent implements OnInit {
   estudosCompativeis: EstudoClinico[] = [];
   loading = true;
-  private pacienteId = 18;
-  pacienteIdLogado: number = 18;
+  pacienteIdLogado: number | null = null;
+  
 
-  constructor(private estudoService: EstudoClinicoService) {}
+  constructor(
+    private estudoService: EstudoClinicoService,
+    private authService: AuthService,
+    private participacaoService: ParticipacaoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.estudoService.buscarEstudosCompativeis(this.pacienteId).subscribe({
+    this.authService.usuarioAtual$.subscribe(usuario => {
+      if (usuario && usuario.tipo === 'paciente') {
+        this.pacienteIdLogado = usuario.id;
+        this.carregarEstudosCompativeis(this.pacienteIdLogado);
+      } else {
+        this.loading = false;
+        console.error("Nenhum paciente logado para buscar estudos.");
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  carregarEstudosCompativeis(pacienteId: number): void {
+    this.estudoService.buscarEstudosCompativeis(pacienteId).subscribe({
       next: (data) => {
-        this.estudosCompativeis = data.map(estudo => {
-          const descricaoCorrigida = estudo.descricao ? estudo.descricao : (estudo as any).descrica;
-          return {
-            ...estudo,
-            descricao: descricaoCorrigida
-          };
-        });
+        this.estudosCompativeis = data.map(estudo => ({
+          ...estudo,
+          descricao: estudo.descricao || (estudo as any).descrica
+        }));
         this.loading = false;
       },
       error: (err) => {
@@ -40,4 +55,3 @@ export class PesquisarEstudosComponent implements OnInit {
     });
   }
 }
- 

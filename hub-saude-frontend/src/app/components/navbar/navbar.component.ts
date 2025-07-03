@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService, UsuarioLogado } from '../../auth/auth.service';
 
-
-export interface UsuarioLogado {
-  id: number;
-  nome: string;
-  tipo: 'paciente' | 'centro';
-}
 
 @Component({
   selector: 'app-navbar',
@@ -17,26 +13,19 @@ export interface UsuarioLogado {
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  isLoggedIn$!: Observable<boolean>;
+  usuario$!: Observable<UsuarioLogado | null>;
 
-  
-  isLoggedIn = true; 
-  usuario: UsuarioLogado | null = {
-    id: 18,
-    nome: 'Lauro Paciente',
-    tipo: 'paciente' 
-  };
 
-  constructor(private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-  
+  this.usuario$ = this.authService.usuarioAtual$;
   }
 
   logout(): void {
     
-    console.log('Fazendo logout...');
-    this.isLoggedIn = false;
-    this.usuario = null;
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }
