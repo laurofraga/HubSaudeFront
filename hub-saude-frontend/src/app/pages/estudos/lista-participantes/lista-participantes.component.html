@@ -1,0 +1,45 @@
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Pacientes Participantes</h2>
+    <a [routerLink]="['/estudos', estudoId]" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Voltar para o Estudo
+    </a>
+  </div>
+
+  <div *ngIf="loading" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading">
+    <div *ngIf="participantes.length > 0; else semParticipantes" class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Nome</th>
+              <th scope="col">Email</th>
+              <th scope="col">Condições Médicas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of participantes">
+              <td>{{ p.nome }}</td>
+              <td>{{ p.email }}</td>
+              <td>
+                <span *ngFor="let cond of p.condicoes" class="badge bg-secondary me-1">{{ cond }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #semParticipantes>
+      <div class="text-center py-5">
+        <div class="alert alert-info d-inline-block">
+          <p class="mb-0">Ainda não há pacientes participando deste estudo.</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

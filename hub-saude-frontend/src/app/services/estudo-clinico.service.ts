@@ -6,6 +6,8 @@ import { EstudoClinico } from '../models/estudo.model';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class EstudoClinicoService {
   private apiUrl = '/api';
   constructor(private http: HttpClient) {}
@@ -30,4 +32,14 @@ export class EstudoClinicoService {
  atualizarEstudo(id: number, estudo: Partial<EstudoClinico>): Observable<EstudoClinico> {
     return this.http.put<EstudoClinico>(`${this.apiUrl}/estudos/${id}`, estudo);
   }
+
+  listarParticipantes(estudoId: number): Observable<ParticipanteEstudo[]> {
+  return this.http.get<ParticipanteEstudo[]>(`${this.apiUrl}/estudos/${estudoId}/participantes`);
+}
+}
+
+export interface ParticipanteEstudo {
+  nome: string;
+  email: string;
+  condicoes: string[];
 }

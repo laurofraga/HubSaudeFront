@@ -58,6 +58,9 @@
         </div>
 
         <div class="mt-4 text-end">
+          <a *ngIf="estudo?.id" [routerLink]="['/estudos', estudo.id, 'participantes']" class="btn btn-secondary me-2">
+          <i class="bi bi-people"></i> Ver Pacientes
+          </a>
           <button class="btn btn-danger" (click)="excluirEstudo()">
             <i class="bi bi-trash"></i> Excluir Estudo
           </button>

@@ -12,6 +12,7 @@ import { DetalheEstudoPacienteComponent } from './pages/paciente/detalhe-estudo-
 import { PesquisarEstudosComponent } from './pages/paciente/pesquisar-estudos/pesquisar-estudos.component';
 import path from 'path';
 import { DetalheEstudoPublicoComponent } from './pages/paciente/detalhe-estudo-publico/detalhe-estudo-publico.component';
+import { ListaParticipantesComponent } from './pages/estudos/lista-participantes/lista-participantes.component';
 
 
 export const routes: Routes = [
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'estudos/editar/:id', component: CriarEstudoComponent },
   { path: 'paciente/editar/:id', component: RegisterComponent },
   { path: 'centro/editar/:id', component: RegisterComponent },
+   { path: 'estudos/:id/participantes', component: ListaParticipantesComponent },
 ];
 
 
