@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CentroService } from '../../services/centro.service';
 import { HomeCentroData } from '../../models/home-centro.model';
 import { EstudoClinico } from '../../models/estudo.model'; 
@@ -11,7 +11,7 @@ import { EstudoClinico } from '../../models/estudo.model';
 @Component({
   selector   : 'app-home-centro',
   standalone : true,
-  imports    : [CommonModule],
+  imports    : [CommonModule, RouterLink],
   templateUrl: './home-centro.component.html',
   styleUrls  : ['./home-centro.component.scss']
 })

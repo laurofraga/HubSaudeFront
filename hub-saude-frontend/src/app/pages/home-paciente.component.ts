@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import {PacienteService} from '../services/paciente.service';
 import { HomePacienteData } from '../models/home-paciente.model';
 import { EstudoClinico } from '../models/estudo.model';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home-paciente',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './home-paciente.component.html',
   styleUrl: './home-paciente.component.scss'
 })

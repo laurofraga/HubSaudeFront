@@ -1,38 +1,101 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { PacienteRegister } from '../auth.service';
+import { PacienteRegister, CentroRegister } from '../auth.service';
+import { Paciente } from '../../models/home-paciente.model';
+import { PacienteService } from '../../services/paciente.service';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { CentroHome } from '../../models/home-centro.model';
+import { CentroService } from '../../services/centro.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, FormsModule,ReactiveFormsModule]
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
   sexos = ['M', 'F'];
 
+  isEditMode = false;
+  private idParaEditar: number | null = null;
+  private tipoDeEdicao: 'paciente' | 'centro' | null = null;
+
+
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private pacienteService : PacienteService,
+    private centroService: CentroService,
+    private route : ActivatedRoute,
+    private router : Router,
   ) {}
 
   ngOnInit(): void {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const url = this.router.url;
+
+   if (idParam) {
+  this.isEditMode = true;
+  this.idParaEditar = +idParam; 
+  this.initializeForm();
+
+    if (url.includes('/paciente/editar')) {
+      this.tipoDeEdicao = 'paciente';
+      this.registerForm.get('tipo')?.setValue('paciente');
+      this.carregarDadosDoPaciente(this.idParaEditar);
+    } else if (url.includes('/centro/editar')) {
+      this.tipoDeEdicao = 'centro';
+      this.registerForm.get('tipo')?.setValue('centro');
+      this.carregarDadosDoCentro(this.idParaEditar); 
+    }
+} else {
+      this.isEditMode = false;
+      this.initializeForm();
+      this.applyTipoFields();
+      this.registerForm.get('tipo')!.valueChanges.subscribe(() => this.applyTipoFields());
+    }
+  }
+  private initializeForm() {
     this.registerForm = this.fb.group({
-      tipo: ['paciente', Validators.required],
+      tipo: [{ value: 'paciente', disabled: this.isEditMode }, Validators.required],
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
+      senha: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(6)]],
       endereco: ['', Validators.required]
     });
+  }
 
-    this.applyTipoFields();
-    this.registerForm.get('tipo')!.valueChanges.subscribe(() => this.applyTipoFields());
+ private carregarDadosDoPaciente(id: number): void {
+    this.pacienteService.buscarPacientePorId(id).subscribe(paciente => {
+      this.applyTipoFields(); 
+      this.registerForm.patchValue({
+        nome: paciente.nome,
+        email: paciente.email,
+        endereco: paciente.endereco,
+        idade: paciente.idade,
+        sexo: paciente.sexo, 
+        condicoes: paciente.condicoes ? paciente.condicoes.join(', ') : ''
+      });
+    });
+  }
+
+  private carregarDadosDoCentro(id: number): void {
+    this.centroService.buscarCentroPorId(id).subscribe(centro => {
+      this.applyTipoFields();
+      this.registerForm.patchValue({
+        nome: centro.nome,
+        email: centro.email,
+        endereco: centro.endereco,
+        telefone: centro.telefone
+      });
+    });
   }
 
   private applyTipoFields() {
@@ -60,42 +123,90 @@ export class RegisterComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   onSubmit(): void {
-    this.submitted = true;
+   this.submitted = true;
+  if (this.registerForm.invalid) return;
 
-    if (this.registerForm.invalid) return;
-
-    const { tipo, ...formValues } = this.registerForm.value;
-
-   if (tipo === 'paciente') {
-  let condicoes = formValues.condicoes as any;
-  if (typeof condicoes === 'string') {
-    condicoes = condicoes.split(',').map((c: string) => c.trim()).filter(Boolean);
+  if (this.isEditMode) {
+    if (this.tipoDeEdicao === 'paciente') {
+      this.atualizarPaciente();
+    } else if (this.tipoDeEdicao === 'centro') {
+      this.atualizarCentro();
+    }
+  } else {
+    this.registrarNovoUsuario();
   }
-
-  const idadeNumber = parseInt(formValues.idade, 10);
-  if (isNaN(idadeNumber)) {
-    alert('Digite uma idade válida.');
-    return;
   }
-
-  const payload: PacienteRegister = {
+  
+private atualizarCentro(): void {
+  if (!this.idParaEditar) return;
+  const formValues = this.registerForm.getRawValue();
+  const payload: Partial<CentroHome> = {
     nome: formValues.nome,
     email: formValues.email,
-    senha: formValues.senha,
-    idade: idadeNumber,
-    sexo: formValues.sexo,
-    condicoes,
     endereco: formValues.endereco,
+    telefone: formValues.telefone
   };
-  
+  if (formValues.senha) { (payload as any).senha = formValues.senha; }
 
-  this.authService.registerPaciente(payload).subscribe({
-    next: res => console.log('Paciente cadastrado', res),
-    error: err => console.error('Erro ao cadastrar paciente', err)
+  this.centroService.atualizarCentro(this.idParaEditar, payload).subscribe({
+    next: () => {
+      alert('Perfil do centro atualizado com sucesso!');
+      this.router.navigate(['/centro-home', this.idParaEditar]);
+    },
+    error: (err) => alert(`Erro: ${err.error.message}`)
   });
 }
 
-     else if (tipo === 'centro') {
+private atualizarPaciente(): void {
+    if (!this.idParaEditar) return;
+    const formValues = this.registerForm.getRawValue();
+    const payload: Partial<Paciente> = {
+      nome: formValues.nome,
+      email: formValues.email,
+      endereco: formValues.endereco,
+      idade: parseInt(formValues.idade, 10),
+      sexo: formValues.sexo,
+      condicoes: typeof formValues.condicoes === 'string' ? formValues.condicoes.split(',').map((c: string) => c.trim()).filter(Boolean) : formValues.condicoes
+    };
+    if (formValues.senha) { (payload as PacienteRegister).senha = formValues.senha; }
+    this.pacienteService.atualizarPaciente(this.idParaEditar, payload).subscribe({
+      next: () => {
+        alert('Perfil de paciente atualizado com sucesso!');
+        this.router.navigate(['/home-paciente', this.idParaEditar]);
+      },
+      error: (err) => alert(`Erro: ${err.error.message}`)
+    });
+  }
+
+private registrarNovoUsuario(): void {
+    const { tipo, ...formValues } = this.registerForm.value;
+    if (tipo === 'paciente') {
+      let condicoes = formValues.condicoes as any;
+      if (typeof condicoes === 'string') {
+        condicoes = condicoes.split(',').map((c: string) => c.trim()).filter(Boolean);
+      }
+      const idadeNumber = parseInt(formValues.idade, 10);
+      if (isNaN(idadeNumber)) {
+        alert('Digite uma idade válida.');
+        return;
+      }
+      const payload: PacienteRegister = {
+        nome: formValues.nome,
+        email: formValues.email,
+        senha: formValues.senha,
+        idade: idadeNumber,
+        sexo: formValues.sexo,
+        condicoes,
+        endereco: formValues.endereco,
+      };
+      this.authService.registerPaciente(payload).subscribe({
+        next: res => {
+          console.log('Paciente cadastrado', res);
+          this.router.navigate(['/login']);
+        },
+        error: err => console.error('Erro ao cadastrar paciente', err)
+      });
+    } else if (tipo === 'centro') {
       const payload = {
         nome: formValues.nome,
         email: formValues.email,
@@ -103,23 +214,14 @@ export class RegisterComponent implements OnInit {
         telefone: formValues.telefone,
         endereco: formValues.endereco,
       };
-      console.log('Payload enviado:', payload);
       this.authService.registerCentro(payload).subscribe({
-        next: (res) => {
-          console.log('Centro cadastrado com sucesso:', res);
-        },
-        error: (err) => {
-          console.error('Erro ao cadastrar centro:', err);
-        }
+        next: (res) => console.log('Centro cadastrado com sucesso:', res),
+        error: (err) => console.error('Erro ao cadastrar centro:', err)
       });
     }
-
-    console.log('Cadastro válido', this.registerForm.value);
-    
-    
   }
 
-  mustMatch(controlName: string, matchingControlName: string) {
+mustMatch(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
       const control = formGroup.controls[controlName];
       const matchingControl = formGroup.controls[matchingControlName];
@@ -136,3 +238,4 @@ export class RegisterComponent implements OnInit {
     };
   }
 }
+

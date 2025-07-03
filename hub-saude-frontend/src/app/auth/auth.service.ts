@@ -21,7 +21,7 @@ export  interface PacienteRegister {
 }
 
 
-interface CentroRegister {
+export interface CentroRegister {
   nome: string;
   email: string;
   senha: string;

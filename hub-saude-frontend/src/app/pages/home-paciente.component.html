@@ -3,6 +3,9 @@
   <div class="perfil card shadow-sm mb-5">
     <div class="card-body">
       <h3 class="mb-3">Olá, {{ data.paciente.nome }}!</h3>
+      <a [routerLink]="['/paciente/editar', data.paciente.id]" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-pencil"></i> Editar Perfil
+      </a>
       <div class="row gy-1 small">
         <div class="col-sm-6"><strong>Idade:</strong> {{ data.paciente.idade }}</div>
         <div class="col-sm-6"><strong>Sexo:</strong> {{ data.paciente.sexo }}</div>

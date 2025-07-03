@@ -1,8 +1,13 @@
 <header class="header bg-dark text-white px-4 py-3 d-flex align-items-center justify-content-between shadow-sm">
   <h4 class="mb-0">{{ data.centro.nome }}</h4>
-  <button class="btn btn-outline-light" (click)="criarEstudo()">
-    + Criar estudo
-  </button>
+  <div>
+    <a [routerLink]="['/centro/editar', data.centro.id]" class="btn btn-outline-light me-2">
+      <i class="bi bi-pencil"></i> Editar Perfil
+    </a>
+    <button class="btn btn-primary" (click)="criarEstudo()">
+      + Criar Estudo
+    </button>
+  </div>
 </header>
 
 <div *ngIf="loading" class="d-flex justify-content-center my-5">

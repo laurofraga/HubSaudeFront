@@ -1,65 +1,81 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-body p-5">
+          <!-- Título dinâmico -->
+          <h3 class="card-title text-center mb-4">{{ isEditMode ? 'Editar Perfil' : 'Criar Nova Conta' }}</h3>
 
-  <!-- Seletor de tipo -->
-  <div class="form-group">
-    <label>Tipo de conta</label>
-    <select class="form-control" formControlName="tipo">
-      <option value="paciente">Paciente</option>
-      <option value="centro">Centro Clínico</option>
-    </select>
-  </div>
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            
+            <!-- Seletor de tipo (desabilitado no modo de edição) -->
+            <div class="form-group mb-3" *ngIf="!isEditMode">
+              <label>Tipo de conta</label>
+              <select class="form-control" formControlName="tipo">
+                <option value="paciente">Paciente</option>
+                <option value="centro">Centro Clínico</option>
+              </select>
+            </div>
 
-  <!-- Campos comuns -->
-  <div class="form-group">
-    <label>Nome</label>
-    <input type="text" class="form-control" formControlName="nome">
-  </div>
+            <!-- Campos comuns -->
+            <div class="form-group mb-3">
+              <label>Nome</label>
+              <input type="text" class="form-control" formControlName="nome">
+            </div>
+            <div class="form-group mb-3">
+              <label>Email</label>
+              <input type="email" class="form-control" formControlName="email">
+            </div>
+            <div class="form-group mb-3">
+              <label>Endereço</label>
+              <input type="text" class="form-control" formControlName="endereco">
+            </div>
 
-  <div class="form-group">
-    <label>Email</label>
-    <input type="email" class="form-control" formControlName="email">
-  </div>
+            <!-- Campos específicos de paciente -->
+            <ng-container *ngIf="f['tipo'].value === 'paciente'">
+              <div class="form-group mb-3">
+                <label>Idade</label>
+                <input type="number" class="form-control" formControlName="idade" />
+              </div>
+              <div class="form-group mb-3">
+                <label>Sexo</label>
+                <select class="form-control" formControlName="sexo">
+                  <option value="" disabled>Selecione...</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label>Condições médicas (separadas por vírgula)</label>
+                <input type="text" class="form-control" formControlName="condicoes">
+              </div>
+            </ng-container>
 
-  <div class="form-group">
-    <label>Senha</label>
-    <input type="password" class="form-control" formControlName="senha">
-  </div>
+            <!-- Campos específicos de centro -->
+            <ng-container *ngIf="f['tipo'].value === 'centro'">
+              <div class="form-group mb-3">
+                <label>Telefone</label>
+                <input type="text" class="form-control" formControlName="telefone">
+              </div>
+            </ng-container>
 
-  <div class="form-group">
-    <label>Endereço</label>
-    <input type="text" class="form-control" formControlName="endereco">
-  </div>
+            <!-- Seção de Senha Dinâmica -->
+            <hr class="my-4">
+            <p *ngIf="isEditMode" class="text-muted small text-center">Deixe o campo de senha em branco para manter a senha atual.</p>
+            <div class="form-group mb-3">
+              <label>Senha</label>
+              <input type="password" class="form-control" formControlName="senha">
+            </div>
 
-  <!-- Campos específicos de paciente -->
-  <ng-container *ngIf="f['tipo'].value === 'paciente'">
-    <div class="form-group">
-    <label>Idade</label>
-    <input type="number" class="form-control" formControlName="idade" />
-    <div *ngIf="submitted && f['idade'].errors" class="text-danger">
-      Idade é obrigatória.
+            <!-- Botão de Envio Dinâmico -->
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid">
+                {{ isEditMode ? 'Salvar Alterações' : 'Cadastrar' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    </div>
-    <div class="form-group">
-      <label>Sexo</label>
-      <select class="form-control" formControlName="sexo">
-        <option value="M">Masculino</option>
-        <option value="F">Feminino</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Condições médicas (separadas por vírgula)</label>
-      <input type="text" class="form-control" formControlName="condicoes">
-    </div>
-  </ng-container>
-
-  <!-- Campos específicos de centro -->
-  <ng-container *ngIf="f['tipo'].value === 'centro'">
-    <div class="form-group">
-      <label>Telefone</label>
-      <input type="text" class="form-control" formControlName="telefone">
-    </div>
-  </ng-container>
-
-  <button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
-</form>
+  </div>
+</div>
