@@ -63,10 +63,11 @@ export class DetalhesEstudoComponent implements OnInit {
             this.router.navigate(['/']); 
           }
         },
-        error: (err) => {
-          console.error('Erro ao excluir estudo:', err);
-          alert('Ocorreu um erro ao excluir o estudo.');
-        }
+         error: (err) => {
+        console.error('Erro ao excluir estudo:', err);
+        const mensagemDeErro = err.error?.error || 'Ocorreu um erro ao tentar excluir o estudo.';
+        alert(mensagemDeErro);
+      }
       });
     }
   }
