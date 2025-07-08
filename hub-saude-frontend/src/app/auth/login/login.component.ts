@@ -2,19 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService, LoginResponse } from '../auth.service';
+import { AuthService } from '../auth.service';
 import { Router, RouterLink } from '@angular/router';
-
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule,RouterLink]
+  imports: [CommonModule, ReactiveFormsModule, RouterLink]
 })
 export class LoginComponent implements OnInit {
-
   loginForm!: FormGroup;
   submitted = false;
 
@@ -37,14 +35,8 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: (res: LoginResponse) => { 
-        console.log('Login realizado:', res);
-
-        if (res.tipo === 'centro') {
-          this.router.navigate([`/centro-home/${res.user.id}`]);
-        } else if (res.tipo === 'paciente') {
-          this.router.navigate([`/home-paciente/${res.user.id}`]);
-        }
+      next: (res) => { 
+        console.log('Login bem-sucedido, AppComponent irá navegar.', res);
       },
       error: (err) => {
         console.error('Erro ao fazer login:', err);
@@ -53,4 +45,3 @@ export class LoginComponent implements OnInit {
     });
   }
 }
-

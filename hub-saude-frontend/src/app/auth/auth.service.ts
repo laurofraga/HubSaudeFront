@@ -71,7 +71,7 @@ export class AuthService {
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioParaSalvar));
         }
-        
+        console.log('[AuthService] Anunciando novo login para:', usuarioParaSalvar.nome);
         this.usuarioAtualSubject.next(usuarioParaSalvar);
       })
     );
@@ -99,5 +99,9 @@ export class AuthService {
 
 registerCentro(data: CentroRegister): Observable<any> {
   return this.http.post(`${this.baseUrl}/register/centro`, data);
+}
+
+public getUsuarioAtualValue(): UsuarioLogado | null {
+  return this.usuarioAtualSubject.getValue();
 }
 }
