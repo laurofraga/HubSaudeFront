@@ -3,12 +3,11 @@
     <div class="col-md-8 col-lg-6">
       <div class="card shadow-sm">
         <div class="card-body p-5">
-          <!-- Título dinâmico -->
+ 
           <h3 class="card-title text-center mb-4">{{ isEditMode ? 'Editar Perfil' : 'Criar Nova Conta' }}</h3>
 
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            
-            <!-- Seletor de tipo (desabilitado no modo de edição) -->
+ 
             <div class="form-group mb-3" *ngIf="!isEditMode">
               <label>Tipo de conta</label>
               <select class="form-control" formControlName="tipo">
@@ -17,7 +16,7 @@
               </select>
             </div>
 
-            <!-- Campos comuns -->
+
             <div class="form-group mb-3">
               <label>Nome</label>
               <input type="text" class="form-control" formControlName="nome">
@@ -31,7 +30,7 @@
               <input type="text" class="form-control" formControlName="endereco">
             </div>
 
-            <!-- Campos específicos de paciente -->
+
             <ng-container *ngIf="f['tipo'].value === 'paciente'">
               <div class="form-group mb-3">
                 <label>Idade</label>
@@ -51,7 +50,6 @@
               </div>
             </ng-container>
 
-            <!-- Campos específicos de centro -->
             <ng-container *ngIf="f['tipo'].value === 'centro'">
               <div class="form-group mb-3">
                 <label>Telefone</label>
@@ -59,7 +57,6 @@
               </div>
             </ng-container>
 
-            <!-- Seção de Senha Dinâmica -->
             <hr class="my-4">
             <p *ngIf="isEditMode" class="text-muted small text-center">Deixe o campo de senha em branco para manter a senha atual.</p>
             <div class="form-group mb-3">
@@ -67,7 +64,6 @@
               <input type="password" class="form-control" formControlName="senha">
             </div>
 
-            <!-- Botão de Envio Dinâmico -->
             <div class="d-grid mt-4">
               <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid">
                 {{ isEditMode ? 'Salvar Alterações' : 'Cadastrar' }}
