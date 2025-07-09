@@ -3,11 +3,9 @@ import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { switchMap, take } from 'rxjs/operators';
 
-// O interceptor agora é uma função, não uma classe.
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService); // Usamos inject() para obter o serviço
+  const authService = inject(AuthService); 
 
-  // Ignora a própria requisição de login
   if (req.url.includes('/api/auth/login')) {
     return next(req);
   }
