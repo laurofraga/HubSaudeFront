@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit {
   private idParaEditar: number | null = null;
   private tipoDeEdicao: 'paciente' | 'centro' | null = null;
 
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -124,6 +125,8 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
    this.submitted = true;
+
+   this.isSubmitting = true;
   if (this.registerForm.invalid) return;
 
   if (this.isEditMode) {
@@ -152,9 +155,13 @@ private atualizarCentro(): void {
     next: () => {
       alert('Perfil do centro atualizado com sucesso!');
       this.router.navigate(['/centro-home', this.idParaEditar]);
+      this.isSubmitting = false;
     },
-    error: (err) => alert(`Erro: ${err.error.message}`)
-  });
+    error: (err) => {
+        alert(`Erro: ${err.error.message}`);
+        this.isSubmitting = false;
+      }
+    });
 }
 
 private atualizarPaciente(): void {
@@ -173,8 +180,12 @@ private atualizarPaciente(): void {
       next: () => {
         alert('Perfil de paciente atualizado com sucesso!');
         this.router.navigate(['/home-paciente', this.idParaEditar]);
+        this.isSubmitting = false;
       },
-      error: (err) => alert(`Erro: ${err.error.message}`)
+      error: (err) => {
+        alert(`Erro: ${err.error.message}`);
+        this.isSubmitting = false; 
+      }
     });
   }
 
@@ -203,9 +214,14 @@ private registrarNovoUsuario(): void {
         next: res => {
           console.log('Paciente cadastrado', res);
           this.router.navigate(['/login']);
+          this.isSubmitting = false;
         },
-        error: err => console.error('Erro ao cadastrar paciente', err)
+       error: err => {
+          console.error('Erro ao cadastrar paciente', err);
+          this.isSubmitting = false; 
+        }
       });
+
     } else if (tipo === 'centro') {
       const payload = {
         nome: formValues.nome,
@@ -215,8 +231,17 @@ private registrarNovoUsuario(): void {
         endereco: formValues.endereco,
       };
       this.authService.registerCentro(payload).subscribe({
-        next: (res) => console.log('Centro cadastrado com sucesso:', res),
-        error: (err) => console.error('Erro ao cadastrar centro:', err)
+        next: (res) => {
+          console.log('Centro cadastrado com sucesso:', res);
+          alert('Centro clínico cadastrado com sucesso! Você será redirecionado para o login.');
+          this.router.navigate(['/login']);
+          this.isSubmitting = false; 
+        },
+       error: (err) => {
+          console.error('Erro ao cadastrar centro:', err);
+          alert(`Erro no cadastro: ${err.error.error || 'Tente novamente.'}`);
+          this.isSubmitting = false; 
+        }
       });
     }
   }

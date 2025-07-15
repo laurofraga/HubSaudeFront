@@ -64,11 +64,16 @@
               <input type="password" class="form-control" formControlName="senha">
             </div>
 
-            <div class="d-grid mt-4">
-              <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid">
-                {{ isEditMode ? 'Salvar Alterações' : 'Cadastrar' }}
+           <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid || isSubmitting">
+              <span *ngIf="!isSubmitting">{{ isEditMode ? 'Salvar Alterações' : 'Cadastrar' }}</span>
+              <span *ngIf="isSubmitting">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Processando...
+              </span>
               </button>
             </div>
+
           </form>
         </div>
       </div>
