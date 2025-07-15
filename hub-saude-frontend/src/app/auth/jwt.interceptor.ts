@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { switchMap, take } from 'rxjs/operators';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+  console.log('JwtInterceptor executado');
   const authService = inject(AuthService); 
 
   if (req.url.includes('/api/auth/login')) {
