@@ -41,11 +41,19 @@ export class CriarEstudoComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
+    if (this.router.url.includes('/editar/')) {
       this.isEditMode = true;
-      this.estudoId = +idParam;
-      this.carregarDadosDoEstudo(this.estudoId);
+      const idParam = this.route.snapshot.paramMap.get('id');
+      if (idParam) {
+        this.estudoId = +idParam;
+        this.carregarDadosDoEstudo(this.estudoId);
+      }
+    } else {
+      this.isEditMode = false;
+      const idParam = this.route.snapshot.paramMap.get('id');
+      if (idParam) {
+        this.centroId = +idParam;
+      }
     }
   }
    carregarDadosDoEstudo(id: number): void {
@@ -88,25 +96,31 @@ export class CriarEstudoComponent implements OnInit{
   }
 
 enviar(): void {
-    const payload: Partial<EstudoClinico> = {
-      titulo: this.estudo.titulo,
-      descricao: this.estudo.descricao, 
-      fase: this.estudo.fase,
-      dataInicio: this.estudo.dataInicio,
-      dataFim: this.estudo.dataFim,
-      criteriosInclusao: this.estudo.criteriosInclusao,
-      criteriosExclusao: this.estudo.criteriosExclusao,
-    };
-
     if (this.isEditMode && this.estudoId) {
+      const payload: Partial<EstudoClinico> = {
+        titulo: this.estudo.titulo,
+        descricao: this.estudo.descricao,
+        fase: this.estudo.fase,
+        dataInicio: this.estudo.dataInicio,
+        dataFim: this.estudo.dataFim,
+        criteriosInclusao: this.estudo.criteriosInclusao,
+        criteriosExclusao: this.estudo.criteriosExclusao,
+      };
       this.estudoService.atualizarEstudo(this.estudoId, payload).subscribe({
         next: () => {
           alert('Estudo atualizado com sucesso!');
           this.router.navigate(['/estudos', this.estudoId]);
         },
-        error: (err) => console.error('Erro ao atualizar', err)
+        error: (err) => console.error('Erro ao atualizar estudo', err)
       });
     } else {
+      const dadosParaEnviar = { ...this.estudo };
+      (dadosParaEnviar as any).descrica = dadosParaEnviar.descricao;
+      delete (dadosParaEnviar as any).descricao;
+      const payload = {
+        ...dadosParaEnviar,
+        centroClinicoId: this.centroId
+      };
       this.estudoService.criarEstudo(payload).subscribe({
         next: (novoEstudo) => {
           alert('Estudo criado com sucesso!');
